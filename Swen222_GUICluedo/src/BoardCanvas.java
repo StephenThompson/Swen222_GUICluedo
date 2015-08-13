@@ -16,7 +16,7 @@ public class BoardCanvas extends JPanel {
 	BufferedImage board = null;
 
 	public BoardCanvas(){
-		setPreferredSize(new Dimension(480, 480));
+		setPreferredSize(new Dimension(600, 600));
 		try {
 			board = ImageIO.read(new File("src/Images/board.jpg"));
 		} catch (IOException e) {

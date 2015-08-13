@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -21,23 +22,33 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.SoftBevelBorder;
 
 
 public class SidePanel extends JPanel{
 	BufferedImage board = null;
-	
+	JPanel characterPanel;
+	JPanel optionPanel;
+
 	public SidePanel(){
+		GridBagLayout gridMain = new GridBagLayout();
+
+
 		JButton viewCards = new JButton("View Cards");
 		JButton move = new JButton("Move");
 		JButton guess = new JButton("Guess");
 		JButton accuse = new JButton("Accuse");
 
+		setLayout(gridMain);
+
+		//Character Panel
+		characterPanel = new JPanel();
 		GridBagLayout grid = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
-		setLayout(grid);
-
+		characterPanel.setLayout(grid);
+		characterPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
+		characterPanel.setBackground(new Color(0,0,0,50));
 		c.fill = GridBagConstraints.BOTH;
-		
 		c.gridx = 0;
 		c.gridy = 0;
 		c.insets = new Insets(5, 5, 5, 5);
@@ -48,8 +59,11 @@ public class SidePanel extends JPanel{
 		BufferedImage myPicture;
 		try {
 			myPicture = ImageIO.read(new File("src/Images/ColonelMustard.jpg"));
-			JLabel picLabel = new JLabel(new ImageIcon(myPicture));
-			add(picLabel, c);
+			ImageIcon img = new ImageIcon(myPicture);
+			//img.
+			JLabel picLabel = new JLabel(img);
+			characterPanel.setSize(100, 100);
+			characterPanel.add(picLabel, c);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,31 +73,58 @@ public class SidePanel extends JPanel{
 
 		JTextField name = new JTextField("Colonel Mustard");
 		name.setEditable(false);
-		add(name, c);
-		
+		characterPanel.add(name, c);
+
 		c.gridx = 0;
 		c.gridy = 2;
-		add(viewCards, c);
-		
-		c.gridx = 0;
-		c.gridy = 3;
-		add(move, c);
-		
-		c.gridx = 0;
-		c.gridy = 4;
-		add(guess, c);
-		
-		c.gridx = 0;
-		c.gridy = 5;
-		add(accuse, c);
-		
+		characterPanel.add(viewCards, c);
+
+		// Option Panel
+		optionPanel = new JPanel();
+		GridBagLayout grid2 = new GridBagLayout();
+		GridBagConstraints c2 = new GridBagConstraints();
+		c2.fill = GridBagConstraints.BOTH;
+		c2.gridx = 0;
+		c2.gridy = 0;
+		c2.insets = new Insets(5, 5, 5, 5);
+		//c2.ipadx = 5;
+		//c2.ipady = 5;
+		optionPanel.setLayout(grid2);
+		optionPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
+		optionPanel.setBackground(new Color(0,0,0,50));
+		optionPanel.setSize(100, 150);
+		c2.gridx = 0;
+		c2.gridy = 1;
+		optionPanel.add(move, c2);
+
+		c2.gridx = 0;
+		c2.gridy = 2;
+		optionPanel.add(guess, c2);
+
+		c2.gridx = 0;
+		c2.gridy = 3;
+		optionPanel.add(accuse, c2);
+
+		// Add stuff to main panel
+		GridBagConstraints c3 = new GridBagConstraints();
+		c3.fill = GridBagConstraints.BOTH;
+		c3.ipadx = 50;
+		c3.ipady = 50;
+		c3.insets = new Insets(25, 25, 25, 25);
+		c3.gridx = 0;
+		c3.gridy = 0;
+		add(characterPanel, c3);
+		c3.gridy = 1;
+		add(optionPanel, c3);
+
+		// Background
 		setPreferredSize(new Dimension(300, 480));
 		try {
 			board = ImageIO.read(new File("src/Images/MenuTexture.jpg"));
 		} catch (IOException e) {
 		}
 	}
-	
+
 	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -96,13 +137,13 @@ public class SidePanel extends JPanel{
         TexturePaint tp = new TexturePaint(board, new Rectangle2D.Double(0,0, board.getWidth(), board.getHeight()));
         g2d.setPaint(tp);
         g2d.fillRect(0, 0, w, h);
-        
+
         g2d.setPaint(gp);
         g2d.fillRect(0, 0, w, h);
-        
+
         g2d.setColor(new Color(255, 255, 255, 50));
         g2d.fillRect(0, 0, 5, h);
-        
+
         g2d.setColor(new Color(0, 0, 0, 100));
         g2d.fillRect(getWidth()-5, 0, 5, h);
     }
