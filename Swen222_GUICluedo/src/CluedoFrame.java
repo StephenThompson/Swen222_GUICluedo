@@ -1,3 +1,5 @@
+import gameOfCluedo.GameOfCluedo;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +12,7 @@ import javax.swing.JMenuItem;
 public class CluedoFrame extends JFrame {
 	private BoardCanvas canvas;
 	private SidePanel sidepanel;
+	private GameOfCluedo goc;
 
 	public CluedoFrame() {
 		super("Cluedo");
@@ -37,14 +40,6 @@ public class CluedoFrame extends JFrame {
 		newGame = new JMenuItem("New Game");
 		exitGame = new JMenuItem("Exit");
 
-		CluedoFrame frame = this;
-		exitGame.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				frame.dispose();
-			}
-		});
 		menu.add(newGame);
 		menu.add(exitGame);
 

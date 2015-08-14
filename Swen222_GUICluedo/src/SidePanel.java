@@ -31,18 +31,20 @@ public class SidePanel extends JPanel{
 	JPanel optionPanel;
 
 	public SidePanel(){
-		GridBagLayout gridMain = new GridBagLayout();
-
-
+		Dimension btnSize = new Dimension(170, 32);
 		JButton viewCards = new JButton("View Cards");
+		viewCards.setPreferredSize(btnSize);
 		JButton move = new JButton("Move");
+		move.setPreferredSize(btnSize);
 		JButton guess = new JButton("Guess");
+		guess.setPreferredSize(btnSize);
 		JButton accuse = new JButton("Accuse");
+		accuse.setPreferredSize(btnSize);
 
-		setLayout(gridMain);
 
 		//Character Panel
 		characterPanel = new JPanel();
+
 		GridBagLayout grid = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		characterPanel.setLayout(grid);
@@ -58,11 +60,9 @@ public class SidePanel extends JPanel{
 
 		BufferedImage myPicture;
 		try {
-			myPicture = ImageIO.read(new File("src/Images/ColonelMustard.jpg"));
+			myPicture = ImageIO.read(new File("src/Images/Peacock.jpg"));
 			ImageIcon img = new ImageIcon(myPicture);
-			//img.
 			JLabel picLabel = new JLabel(img);
-			characterPanel.setSize(100, 100);
 			characterPanel.add(picLabel, c);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -92,7 +92,7 @@ public class SidePanel extends JPanel{
 		optionPanel.setLayout(grid2);
 		optionPanel.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
 		optionPanel.setBackground(new Color(0,0,0,50));
-		optionPanel.setSize(100, 150);
+		//optionPanel.setSize(100, 150);
 		c2.gridx = 0;
 		c2.gridy = 1;
 		optionPanel.add(move, c2);
@@ -105,20 +105,33 @@ public class SidePanel extends JPanel{
 		c2.gridy = 3;
 		optionPanel.add(accuse, c2);
 
+		c2.gridy = 4;
+		c2.weighty = 1.0;
+		optionPanel.add(new JLabel(), c2);
 		// Add stuff to main panel
+		setLayout(new GridBagLayout());
 		GridBagConstraints c3 = new GridBagConstraints();
+		c3.gridwidth = 1;
+		c3.gridheight = 1;
 		c3.fill = GridBagConstraints.BOTH;
-		c3.ipadx = 50;
-		c3.ipady = 50;
-		c3.insets = new Insets(25, 25, 25, 25);
+		
+		c3.ipadx = 5;
+		c3.ipady = 5;
+		c3.weightx = 0.5;
+		c3.weighty = 0.0;
+		
+		c3.insets = new Insets(15, 15, 15, 15);
+		c3.anchor = GridBagConstraints.NORTHWEST;
 		c3.gridx = 0;
 		c3.gridy = 0;
 		add(characterPanel, c3);
 		c3.gridy = 1;
+		c3.weighty = 1;
 		add(optionPanel, c3);
 
+
 		// Background
-		setPreferredSize(new Dimension(300, 480));
+		//setPreferredSize(new Dimension(220, 480));
 		try {
 			board = ImageIO.read(new File("src/Images/MenuTexture.jpg"));
 		} catch (IOException e) {
@@ -128,7 +141,11 @@ public class SidePanel extends JPanel{
 	@Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
+        drawBackground(g);
+    }
+	
+	private void drawBackground(Graphics g){
+		Graphics2D g2d = (Graphics2D) g;
         int w = getWidth();
         int h = getHeight();
         Color color1 = new Color(210, 230, 220, 50);
@@ -146,5 +163,5 @@ public class SidePanel extends JPanel{
 
         g2d.setColor(new Color(0, 0, 0, 100));
         g2d.fillRect(getWidth()-5, 0, 5, h);
-    }
+	}
 }

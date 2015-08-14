@@ -1,5 +1,8 @@
 package gameOfCluedo;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayDeque;
@@ -12,9 +15,14 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
+
 import gameOfCluedo.squares.*;
 
 public class Board {
+	private BufferedImage boardImage = null;
+	private BufferedImage[] playerTokenImage = null;
+
 	public final int xSize = 25;
 	public final int ySize = 25;
 	private Square[][] board = new Square[xSize][ySize];
@@ -23,9 +31,23 @@ public class Board {
 										"Billiard Room", "Library", "Lounge", "Hall", "Study"};
 	private final int[][] roomCoordinates = {{1,4},{10,5},{19,3}, {2,13},{19,11},{19,17},{2,22}, {10,22}, {19,23}};
 	private Map<Player, Position> playerPos = new HashMap<Player, Position>();
-	private final int[][] startingPositions = {{9,0}, {14,0}, {23,6}, {23,19}, {7, 24}, {0, 17}};
-
+	//private final int[][] startingPositions = {{9,0}, {14,0}, {23,6}, {23,19}, {7, 24}, {0, 17}};
+	private final int[][] startingPositions = {{7, 24}, {0, 17}, {9,0}, {14,0}, {23,6}, {23,19}};
+	/*
+	 * 	Miss_Scarlett, Colonel_Mustard, Mrs_White,The_Reverend_Green ,Mrs_Peacock ,Professor_Plum
+	 */
 	public Board(String file){
+		// Load Image
+		try {
+			boardImage = ImageIO.read(new File("src/Images/board.jpg"));
+			playerTokenImage = new BufferedImage[]{ImageIO.read(new File("src/Images/Tokens/token_Scarlett.png")), 
+													ImageIO.read(new File("src/Images/Tokens/token_Mustard.png")), 
+													ImageIO.read(new File("src/Images/Tokens/token_White.png")), 
+													ImageIO.read(new File("src/Images/Tokens/token_Green.png")), 
+													ImageIO.read(new File("src/Images/Tokens/token_Peacock.png")), 
+													ImageIO.read(new File("src/Images/Tokens/token_Plum.png"))};
+		} catch (IOException e) {
+		}
 		createRooms();
 		//Scan File to create board
 		try{
@@ -279,69 +301,24 @@ public class Board {
 	/**
 	 * Draws the board and players
 	 */
-	public void draw(){
-		System.out.print("   ");
-		for(int x =0; x<board.length; x++){
-			System.out.print(" " + (char)(x+65));
-		}
-		System.out.println();
-		char[] CharacterToken = {'S', 'M', 'W', 'G', 'E', 'P'};
-		String[] boardASCII = {
-				   "┌──────────┬─────┘ ░│      │ ░└───┐ ┌────────────┐",
-				   "│▒         │ ░ ░ ░ ░│      │ ░ ░ ░└─┤           ▒│",
-				   "│          │ ░ ░┌───┘      └───┐ ░ ░│Conservatory│",
-				   "│  Kitchen │ ░ ░│              │ ░ ░│            │",
-				   "│          │ ░ ░│   Ball Room  │ ░ ░└↑┐       ┌──┘",
-				   "│          │ ░ ░→              ← ░ ░ ░└───────┴──┐",
-				   "└───────↑↑─┘ ░ ░│              │ ░ ░ ░ ░ ░ ░ ░ ░ │",
-				   " ░ ░ ░ ░ ░ ░ ░ ░└─↑↑────────↑↑─┘ ░ ░ ░ ░ ░ ░ ░┌──┘",
-				   "─┐ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░┌─────────┴──┐",
-				   "┌┴───────┐ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░→  Billard   │",
-				   "│        └─────┐ ░ ░┌────────┐ ░ ░ ░│    Room    │",
-				   "│              │ ░ ░│        │ ░ ░ ░│            │",
-				   "│ Dining Room  ← ░ ░│        │ ░ ░ ░└───────↑↑┬──┘",
-				   "│              │ ░ ░│ Cluedo │ ░ ░ ░ ░ ░ ░ ░ ░│   ",
-				   "│              │ ░ ░│        │ ░ ░ ░┌───↓↓────┴──┐",
-				   "└┬──────────↑↑─┘ ░ ░│        │ ░ ░┌─┘            │",
-				   "─┘ ░ ░ ░ ░ ░ ░ ░ ░ ░└────────┘ ░ ░→    Library   │",
-				   " ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░ ░└─┐            │",
-				   "─┐ ░ ░ ░ ░ ░ ░ ░ ░┌───↓↓↓↓───┐ ░ ░ ░└────────────┤",
-				   "┌┴──────────↓┐ ░ ░│          │ ░ ░ ░ ░ ░ ░ ░ ░ ░ │",
-				   "│            │ ░ ░│          ← ░ ░ ░ ░ ░ ░ ░ ░┌──┘",
-				   "│   Lounge   │ ░ ░│   Hall   │ ░ ░┌↓──────────┴──┐",
-				   "│            │ ░ ░│          │ ░ ░│    Study     │",
-				   "│▒           │ ░ ░│          │ ░ ░│             ▒│",
-				   "└────────────┘ ░┌─┴──────────┴─┐ ░└──────────────┘"};
-		//Draw board
-		for (int y=0; y < board[0].length; y++){
-			System.out.printf("%2d ", y+1);
+	public BufferedImage draw(){
+		BufferedImage boardReturn = new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
+		Graphics g = boardReturn.getGraphics();
+		g.drawImage(boardImage, 0, 0, 1024, 1024, null);
+		int gridSize = 38;
+		int offX = 40;
+		int offY = 24;
 
-			for(int x =0; x<board.length; x++){
-				Set<Player> atPos = new HashSet<Player>();
-				//Draw players
-				for (Player p : playerPos.keySet()){
-					if (playerPos.get(p).equals(new Position(x,y))){
-						atPos.add(p);
-					}
-				}
-				if (atPos.size() > 0){
-					System.out.print(" ");
-					for (Player p : atPos){
-						if (playerPos.get(p).isRoom()){
-							System.out.print(CharacterToken[p.getName().ordinal()]);
-						} else {
-							System.out.print(CharacterToken[p.getName().ordinal()]);
-						}
-					}
-					x += atPos.size()/2;
-					if (atPos.size() > 1 && atPos.size() % 2 == 0){
-						System.out.print(boardASCII[y].substring(x*2+1, x*2+2));
-					}
-				} else {
-					System.out.print(boardASCII[y].substring(x*2, x*2+2));
-				}
+		for (Player p : playerPos.keySet()){
+			Position pos = playerPos.get(p);
+			//if (p.getName() == Player.Character.Colonel_Mustard){
+			g.drawImage(playerTokenImage[p.getName().ordinal()], offX +4+ pos.getX()*gridSize, offY +4+ pos.getY()*gridSize, null);
+			/*	continue;
 			}
-			System.out.println();
+			Color[] col = {Color.RED, Color.YELLOW, Color.WHITE, Color.GREEN, Color.BLUE, Color.MAGENTA.darker()};
+			g.setColor(col[p.getName().ordinal()]);
+			g.fillRect(offX + pos.getX()*gridSize, offY + pos.getY()*gridSize, gridSize, gridSize);*/
 		}
+		return boardReturn;
 	}
 }
