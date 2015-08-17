@@ -28,7 +28,7 @@ public class TextClient {
 			options = inRoomOptions;
 		}
 		//Ask player for choice and print options
-		System.out.println("\n" + p.getName().name().replace('_', ' ') + "'s turn!\n");
+		System.out.println("\n" + p.getCharacter().name().replace('_', ' ') + "'s turn!\n");
 		printPlayerHand(p);
 		System.out.println("\n-- Make a choice --");
 		for(int i=0; i<options.length; i++){
@@ -198,7 +198,7 @@ public class TextClient {
 	 */
 	private void printPlayerHand(Player p){
 		List<Card> hand = p.gethand();
-		System.out.println(p.getName().name().replace('_', ' ') + "'s hand contains : ");
+		System.out.println(p.getName().replace('_', ' ') + "'s hand contains : ");
 		for(int i = 0; i<hand.size()-1; i++){
 			System.out.print(hand.get(i).toString() + ", ");
 		}

@@ -2,6 +2,7 @@ import gameOfCluedo.GameOfCluedo;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.GridBagLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,6 +12,7 @@ import java.util.List;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -28,6 +30,8 @@ public class CharSelectFrame extends JFrame implements ActionListener{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		List<JRadioButton> btnList = new ArrayList<JRadioButton>();
+		setLayout(new GridBagLayout());
+
 
 		JPanel pnl_panel = new JPanel();
 		pnl_panel.add(new Label("Select a character:"));
@@ -41,14 +45,14 @@ public class CharSelectFrame extends JFrame implements ActionListener{
 			pnl_panel.add(btn_Char);
 		}
 
-
-
 		ButtonGroup btnGroup = new ButtonGroup();
 		for(JRadioButton btn: btnList){
 			btnGroup.add(btn);
 		}
-		//pnl_panel.setLayout();
+
+		pnl_panel.setLayout(new BoxLayout(pnl_panel, 1));
 		add(pnl_panel);
+
 
 		pack(); // pack components tightly together
 		setResizable(false); // prevent us from being resizeable

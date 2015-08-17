@@ -10,10 +10,17 @@ public class Player {
 	}
 
 	private List<Card> hand = new ArrayList<Card>();
-	private Character name;
+	private Character character;
+	private String name;
 
-	public Player(Character name) {
+	public Player(Character character) {
 		super();
+		this.character = character;
+	}
+
+	public Player(Character character, String name) {
+		super();
+		this.character = character;
 		this.name = name;
 	}
 
@@ -21,8 +28,16 @@ public class Player {
 	 * Get player name
 	 * @return
 	 */
-	public Character getName(){
+	public String getName(){
 		return name;
+	}
+
+	/**
+	 * Get player charcter
+	 * @return
+	 */
+	public Character getCharacter(){
+		return character;
 	}
 
 	/**
@@ -66,5 +81,9 @@ public class Player {
 	 */
 	public void addToHand(Card c){
 		hand.add(c);
+	}
+
+	public String toString(){
+		return name + " <" + character.name() + ">";
 	}
 }

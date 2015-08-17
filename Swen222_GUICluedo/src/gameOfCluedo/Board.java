@@ -40,11 +40,11 @@ public class Board {
 		// Load Image
 		try {
 			boardImage = ImageIO.read(new File("src/Images/board.jpg"));
-			playerTokenImage = new BufferedImage[]{ImageIO.read(new File("src/Images/Tokens/token_Scarlett.png")), 
-													ImageIO.read(new File("src/Images/Tokens/token_Mustard.png")), 
-													ImageIO.read(new File("src/Images/Tokens/token_White.png")), 
-													ImageIO.read(new File("src/Images/Tokens/token_Green.png")), 
-													ImageIO.read(new File("src/Images/Tokens/token_Peacock.png")), 
+			playerTokenImage = new BufferedImage[]{ImageIO.read(new File("src/Images/Tokens/token_Scarlett.png")),
+													ImageIO.read(new File("src/Images/Tokens/token_Mustard.png")),
+													ImageIO.read(new File("src/Images/Tokens/token_White.png")),
+													ImageIO.read(new File("src/Images/Tokens/token_Green.png")),
+													ImageIO.read(new File("src/Images/Tokens/token_Peacock.png")),
 													ImageIO.read(new File("src/Images/Tokens/token_Plum.png"))};
 		} catch (IOException e) {
 		}
@@ -61,7 +61,7 @@ public class Board {
 					if(i==0){
 						board[xPos][yPos] = new BlankSquare();
 					}else if(i==1){
-						board[xPos][yPos] = new RoomSquare();
+						board[xPos][yPos] = new RoomSquare(null);
 					}else{
 						System.out.println("Error loading file (invalid int - " + i + ", xPos = " + xPos + ", yPox = " + yPos + ")");
 					}
@@ -75,8 +75,13 @@ public class Board {
 					}
 					//gets char
 					char c = room.charAt(0);
-					//creates door to room (63 is A, rooms should be in orde of ABC in list)
-					board[xPos][yPos] = new DoorSquare(rooms.get(((int)c)-65));
+					//if c is a-z
+					if((int)c>96 && (int)c<123){
+						board[xPos][yPos] = new RoomSquare(rooms.get(((int)c)-97));
+					}
+					else if((int)c>64&&(int)c<91){//creates door to room (63 is A, rooms should be in orde of ABC in list)
+						board[xPos][yPos] = new DoorSquare(rooms.get(((int)c)-65));
+					}
 				}
 				//Updates x and y
 				xPos++;
@@ -96,7 +101,7 @@ public class Board {
 	 * @param player
 	 */
 	public void addPlayer(Player player){
-		Position pos = new Position(startingPositions[player.getName().ordinal()][0], startingPositions[player.getName().ordinal()][1]);
+		Position pos = new Position(startingPositions[player.getCharacter().ordinal()][0], startingPositions[player.getCharacter().ordinal()][1]);
 		playerPos.put(player, pos);
 	}
 
@@ -130,9 +135,9 @@ public class Board {
 		if(!playerPos.containsKey(player)){return;}
 		playerPos.put(player, pos);
 		if(!pos.isRoom()){
-			System.out.println(player.getName().name().replace('_', ' ') + " is now at " + (char)(pos.getX()+65) + "," + (pos.getY()+1));
+			System.out.println(player.getCharacter().name().replace('_', ' ') + " is now at " + (char)(pos.getX()+65) + "," + (pos.getY()+1));
 		}else{
-			System.out.println(player.getName().name().replace('_', ' ') + " is now in " + pos.getRoom());
+			System.out.println(player.getCharacter().name().replace('_', ' ') + " is now in " + pos.getRoom());
 		}
 	}
 
@@ -312,13 +317,23 @@ public class Board {
 		for (Player p : playerPos.keySet()){
 			Position pos = playerPos.get(p);
 			//if (p.getName() == Player.Character.Colonel_Mustard){
-			g.drawImage(playerTokenImage[p.getName().ordinal()], offX +4+ pos.getX()*gridSize, offY +4+ pos.getY()*gridSize, null);
+			g.drawImage(playerTokenImage[p.getCharacter().ordinal()], offX +4+ pos.getX()*gridSize, offY +4+ pos.getY()*gridSize, null);
 			/*	continue;
 			}
 			Color[] col = {Color.RED, Color.YELLOW, Color.WHITE, Color.GREEN, Color.BLUE, Color.MAGENTA.darker()};
 			g.setColor(col[p.getName().ordinal()]);
 			g.fillRect(offX + pos.getX()*gridSize, offY + pos.getY()*gridSize, gridSize, gridSize);*/
 		}
+//		for(int x = 0; x<board.length; x++){
+//			for(int y = 0; y<board[0].length; y++){
+//				if(board[x][y] instanceof RoomSquare){
+//					if(((RoomSquare)board[x][y]).room()!=null){
+//					g.setColor(new Color(235,235,100,125));
+//					g.fillRect(offX+(x*gridSize), offY+(y*gridSize), gridSize, gridSize);
+//					}
+//				}
+//			}
+//		}
 		return boardReturn;
 	}
 }

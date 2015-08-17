@@ -20,6 +20,44 @@ public class Deck {
 		this.rooms = room;
 	}
 
+	public Deck() {
+		super();
+		// Create lists
+		List<CharCard> charCards = new ArrayList<CharCard>();
+		List<WeaponCard> weaponCards = new ArrayList<WeaponCard>();
+		List<RoomCard> roomCards = new ArrayList<RoomCard>();
+
+		// Characters
+		charCards.add(new CharCard("Miss Scarlett"));
+		charCards.add(new CharCard("Colonel Mustard"));
+		charCards.add(new CharCard("Mrs. White"));
+		charCards.add(new CharCard("The Reverend Green"));
+		charCards.add(new CharCard("Mrs. Peacock"));
+		charCards.add(new CharCard("Professor Plum"));
+
+		// Weapons
+		weaponCards.add(new WeaponCard("Candlestick"));
+		weaponCards.add(new WeaponCard("Dagger"));
+		weaponCards.add(new WeaponCard("Lead Pipe"));
+		weaponCards.add(new WeaponCard("Revolver"));
+		weaponCards.add(new WeaponCard("Rope"));
+		weaponCards.add(new WeaponCard("Spanner"));
+
+		// Rooms
+		roomCards.add(new RoomCard("Kitchen"));
+		roomCards.add(new RoomCard("Ball Room"));
+		roomCards.add(new RoomCard("Conservatory"));
+		roomCards.add(new RoomCard("Dining Room"));
+		roomCards.add(new RoomCard("Billard Room"));
+		roomCards.add(new RoomCard("Library"));
+		roomCards.add(new RoomCard("Lounge"));
+		roomCards.add(new RoomCard("Hall"));
+		roomCards.add(new RoomCard("Study"));
+		this.characters = charCards;
+		this.weapons = weaponCards;
+		this.rooms = roomCards;
+	}
+
 	/**
 	 * Deals cards to the players hands and creates and returns the answer envelope.
 	 * @param players

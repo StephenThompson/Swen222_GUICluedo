@@ -26,6 +26,7 @@ public class BoardCanvas extends JPanel {
 		board = img;
 		this.repaint();
 	}
+
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.BLACK);
