@@ -52,6 +52,7 @@ public class CluedoFrame extends JFrame {
 		pack(); // pack components tightly together
 		setResizable(true); // prevent us from being resizeable
 		setVisible(true); // make sure we are visible!
+		//XXX This is a comment that shouldn't be here
 	}
 
 	public boolean showGameOver(){
