@@ -60,7 +60,7 @@ public class SidePanel extends JPanel{
 
 		BufferedImage myPicture;
 		try {
-			myPicture = ImageIO.read(new File("src/Images/Peacock.jpg"));
+			myPicture = ImageIO.read(new File("src/Images/ColonelMustard.jpg"));
 			ImageIcon img = new ImageIcon(myPicture);
 			JLabel picLabel = new JLabel(img);
 			characterPanel.add(picLabel, c);
