@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class CluedoFrame extends JFrame {
 	private BoardCanvas canvas;
@@ -51,5 +52,14 @@ public class CluedoFrame extends JFrame {
 		pack(); // pack components tightly together
 		setResizable(true); // prevent us from being resizeable
 		setVisible(true); // make sure we are visible!
+	}
+
+	public boolean showGameOver(){
+		int popup = JOptionPane.showConfirmDialog(null, "Game Over!\nAll players eliminated.\n\nDo you want to play again?",
+				"You Won", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+		if(popup==JOptionPane.YES_OPTION){
+			return true;
 		}
+		return false;
+	}
 }

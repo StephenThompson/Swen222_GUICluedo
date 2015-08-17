@@ -13,6 +13,7 @@ public class GameOfCluedo {
 	private Deck deck;
 	private GuessTuple envelope;
 	private Player winner = null;
+	private boolean hasMoved = false;
 
 	public final  static String charList[] = {"Miss Scarlett", "Colonel Mustard", "Mrs. White", "The Reverend Green",
 			"Mrs. Peacock", "Professor Plum"};
@@ -88,7 +89,18 @@ public class GameOfCluedo {
 	public boolean move(Position pos){
 		if(pos==null){return false;}
 		board.setPlayerPosition(currentPlayer, pos);
+		hasMoved = true;
 		return true;
+	}
+
+	/**
+	 * Attempts to move current player to new x,y.
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean canMove(Position pos){
+		return !hasMoved;
 	}
 
 	/**
@@ -188,6 +200,7 @@ public class GameOfCluedo {
 		}else{
 			currentPlayer = players.get(0);
 		}
+		hasMoved=false;
 	}
 
 	/**
