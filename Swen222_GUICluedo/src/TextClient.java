@@ -20,7 +20,7 @@ public class TextClient {
 	 */
 	private PlayerOption playerTurn(Player p){
 		//Draw Board
-		goc.drawBoard();
+		//goc.drawBoard();
 		//Setup option sets
 		PlayerOption[] inRoomOptions = {PlayerOption.MOVE, PlayerOption.SUGGEST, PlayerOption.ACCUSE};
 		PlayerOption[] options = {PlayerOption.MOVE, PlayerOption.ACCUSE};

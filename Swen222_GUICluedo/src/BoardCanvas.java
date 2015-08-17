@@ -16,28 +16,27 @@ import javax.swing.JPanel;
  *
  */
 public class BoardCanvas extends JPanel {
-	Board board;
+	BufferedImage board;
 
 	public BoardCanvas(){
 		setPreferredSize(new Dimension(600, 600));
-		board = new Board("src\\CluedoBoard.txt");
-		board.addPlayer(new Player(Player.Character.Miss_Scarlett));
-		board.addPlayer(new Player(Player.Character.Colonel_Mustard));
-		board.addPlayer(new Player(Player.Character.Mrs_White));
-		board.addPlayer(new Player(Player.Character.Professor_Plum));
-		board.addPlayer(new Player(Player.Character.Mrs_Peacock));
-		board.addPlayer(new Player(Player.Character.The_Reverend_Green));
 	}
 
+	public void setBoard(BufferedImage img){
+		board = img;
+		this.repaint();
+	}
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		BufferedImage b = board.draw();
-		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, this.getSize().width, this.getSize().height);
+
+		if (board == null) {
+			return;
+		}
 		int size = Math.min(this.getSize().width, this.getSize().height);
 		int x = Math.max(0, (this.getSize().width - this.getSize().height)/2);
 		int y = Math.max(0, (this.getSize().height - this.getSize().width)/2);
-		g.drawImage(b, x, y, size, size, this);
+		g.drawImage(board, x, y, size, size, this);
 	}
 }

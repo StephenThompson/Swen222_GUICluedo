@@ -2,6 +2,7 @@ package gameOfCluedo;
 
 import gameOfCluedo.cards.*;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -218,8 +219,8 @@ public class GameOfCluedo {
 	/**
 	 * Draws the board
 	 */
-	public void drawBoard(){
-		board.draw();
+	public BufferedImage getBoard(){
+		return board.draw();
 	}
 
 	/**
