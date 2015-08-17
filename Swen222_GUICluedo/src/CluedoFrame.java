@@ -43,7 +43,7 @@ import javax.swing.border.SoftBevelBorder;
  * JLayout   : lay_Name
 */
 public class CluedoFrame extends JFrame {
-	private BufferedImage board = null;
+	private BufferedImage backTexture = null;
 	private BoardCanvas can_board;
 	private GameOfCluedo goc;
 
@@ -85,12 +85,9 @@ public class CluedoFrame extends JFrame {
 		mitem_newGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				goc = new GameOfCluedo();
-				goc.startGame((int)(Math.random()*3+3));
-				can_board.setBoard(goc.getBoard());
+				startNewGame();
 			}
 		});
-
 
 		mitem_exitGame.addActionListener(new ActionListener() {
 			@Override
@@ -118,7 +115,7 @@ public class CluedoFrame extends JFrame {
 			@Override
 		    protected void paintComponent(Graphics g) {
 		        super.paintComponent(g);
-		        drawBackground(g);
+		        drawBackground(g, getWidth(), getHeight());
 		    }
 		};
 
@@ -213,7 +210,7 @@ public class CluedoFrame extends JFrame {
 
 		// Background
 		try {
-			board = ImageIO.read(new File("src/Images/MenuTexture.jpg"));
+			backTexture = ImageIO.read(new File("src/Images/MenuTexture.jpg"));
 		} catch (IOException e) {
 		}
 
@@ -231,33 +228,35 @@ public class CluedoFrame extends JFrame {
 		return false;
 	}
 
+	public void startNewGame(){
+		new NewGameFrame();
+	}
+
 	/**
 	 * Draws the textured background on the side panel
 	 * @param g
 	 */
-	private void drawBackground(Graphics g){
+	private void drawBackground(Graphics g, int width, int height){
 		Graphics2D g2d = (Graphics2D) g;
 
-        int w = getWidth();
-        int h = getHeight();
         Color color1 = new Color(210, 230, 220, 50);
         Color color2 = new Color(40, 65, 45, 200);
-        GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
-        TexturePaint tp = new TexturePaint(board, new Rectangle2D.Double(0,0, board.getWidth(), board.getHeight()));
+        GradientPaint gp = new GradientPaint(0, 0, color1, 0, height, color2);
+        TexturePaint tp = new TexturePaint(backTexture, new Rectangle2D.Double(0,0, backTexture.getWidth(), backTexture.getHeight()));
 
         // Draw the texture
         g2d.setPaint(tp);
-        g2d.fillRect(0, 0, w, h);
+        g2d.fillRect(0, 0, width, height);
 
         // Draw the gradient
         g2d.setPaint(gp);
-        g2d.fillRect(0, 0, w, h);
+        g2d.fillRect(0, 0, width, height);
 
         // Draw the bevel
         g2d.setColor(new Color(255, 255, 255, 50));
-        g2d.fillRect(0, 0, 5, h);
+        g2d.fillRect(0, 0, 5, height);
 
         g2d.setColor(new Color(0, 0, 0, 100));
-        g2d.fillRect(getWidth()-5, 0, 5, h);
+        g2d.fillRect(width-5, 0, 5, height);
 	}
 }
