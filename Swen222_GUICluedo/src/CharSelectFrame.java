@@ -42,6 +42,10 @@ public class CharSelectFrame extends JFrame implements ActionListener{
 		}
 
 		add(pnl_panel);
+
+		pack(); // pack components tightly together
+		setResizable(false); // prevent us from being resizeable
+		setVisible(true); // make sure we are visible!
 	}
 
 	@Override
