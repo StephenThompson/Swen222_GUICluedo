@@ -2,12 +2,14 @@ import gameOfCluedo.GameOfCluedo;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -19,6 +21,8 @@ import javax.swing.JRadioButton;
 
 public class CharSelectFrame extends JFrame implements ActionListener{
 
+	private String selectedChar = GameOfCluedo.charList[0];
+
 	public CharSelectFrame() {
 		super("Character Selection");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,6 +30,7 @@ public class CharSelectFrame extends JFrame implements ActionListener{
 		List<JRadioButton> btnList = new ArrayList<JRadioButton>();
 
 		JPanel pnl_panel = new JPanel();
+		pnl_panel.add(new Label("Select a character:"));
 		for(String character: GameOfCluedo.charList){
 			JRadioButton btn_Char = new JRadioButton(character);
 		 	//btnMissScarlet.setMnemonic(KeyEvent.VK_S);
@@ -36,11 +41,13 @@ public class CharSelectFrame extends JFrame implements ActionListener{
 			pnl_panel.add(btn_Char);
 		}
 
+
+
 		ButtonGroup btnGroup = new ButtonGroup();
 		for(JRadioButton btn: btnList){
 			btnGroup.add(btn);
 		}
-
+		//pnl_panel.setLayout();
 		add(pnl_panel);
 
 		pack(); // pack components tightly together
@@ -51,6 +58,7 @@ public class CharSelectFrame extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		System.out.println(e.getActionCommand() + " selected");
+		selectedChar = e.getActionCommand();
 
 	}
 

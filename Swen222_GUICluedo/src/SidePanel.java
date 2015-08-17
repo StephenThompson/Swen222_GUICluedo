@@ -60,7 +60,7 @@ public class SidePanel extends JPanel{
 
 		BufferedImage myPicture;
 		try {
-			myPicture = ImageIO.read(new File("src/Images/ColonelMustard.jpg"));
+			myPicture = ImageIO.read(new File("src/Images/Mustard.jpg"));
 			ImageIcon img = new ImageIcon(myPicture);
 			JLabel picLabel = new JLabel(img);
 			characterPanel.add(picLabel, c);
@@ -114,12 +114,12 @@ public class SidePanel extends JPanel{
 		c3.gridwidth = 1;
 		c3.gridheight = 1;
 		c3.fill = GridBagConstraints.BOTH;
-		
+
 		c3.ipadx = 5;
 		c3.ipady = 5;
 		c3.weightx = 0.5;
 		c3.weighty = 0.0;
-		
+
 		c3.insets = new Insets(15, 15, 15, 15);
 		c3.anchor = GridBagConstraints.NORTHWEST;
 		c3.gridx = 0;
@@ -143,7 +143,7 @@ public class SidePanel extends JPanel{
         super.paintComponent(g);
         drawBackground(g);
     }
-	
+
 	private void drawBackground(Graphics g){
 		Graphics2D g2d = (Graphics2D) g;
         int w = getWidth();
