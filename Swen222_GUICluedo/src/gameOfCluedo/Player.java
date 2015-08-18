@@ -84,6 +84,6 @@ public class Player {
 	}
 
 	public String toString(){
-		return name + " <" + character.name() + ">";
+		return name + " <" + character.name().replace('_', ' ') + ">";
 	}
 }

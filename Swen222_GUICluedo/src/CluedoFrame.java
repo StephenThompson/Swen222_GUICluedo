@@ -229,7 +229,9 @@ public class CluedoFrame extends JFrame {
 	}
 
 	public void startNewGame(){
-		new NewGameFrame();
+		goc = new GameOfCluedo();
+		NewGameFrame temp = new NewGameFrame(goc);
+		temp.setAlwaysOnTop(true);
 	}
 
 	/**
