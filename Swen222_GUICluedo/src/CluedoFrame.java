@@ -1,4 +1,6 @@
+import gameOfCluedo.Dice;
 import gameOfCluedo.GameOfCluedo;
+import gameOfCluedo.Position;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -12,6 +14,8 @@ import java.awt.Insets;
 import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -25,7 +29,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -46,6 +49,7 @@ public class CluedoFrame extends JFrame {
 	private BufferedImage backTexture = null;
 	private BoardCanvas can_board;
 	private GameOfCluedo goc;
+	private boolean moveSelected = false;
 
 	public CluedoFrame() {
 		/**
@@ -101,6 +105,7 @@ public class CluedoFrame extends JFrame {
 		 */
 		can_board = new BoardCanvas();
 		add(can_board, BorderLayout.CENTER); // add canvas
+		can_board.addMouseListener(new BoardMouseListener());
 
 		/**
 		 * Side Panel
@@ -172,14 +177,23 @@ public class CluedoFrame extends JFrame {
 		pnl_option.setBackground(new Color(0,0,0,50));
 
 		// Buttons
+
+		ActionListener btnListener = new BtnListener();
+
  	    btn_move = new JButton("Move");
  	    btn_move.setPreferredSize(btnSize);
+ 	    btn_move.setActionCommand("MOVE");
+ 	    btn_move.addActionListener(btnListener);
 
 		btn_guess = new JButton("Guess");
 		btn_guess.setPreferredSize(btnSize);
+		btn_guess.setActionCommand("GUESS");
+		btn_guess.addActionListener(btnListener);
 
 		btn_accuse = new JButton("Accuse");
 		btn_accuse.setPreferredSize(btnSize);
+		btn_accuse.setActionCommand("ACCUSE");
+		btn_accuse.addActionListener(btnListener);
 
 		//
 		lay_gridConst.gridy = 0;
@@ -219,6 +233,74 @@ public class CluedoFrame extends JFrame {
 		setVisible(true); // make sure we are visible!
 	}
 
+	private class BtnListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			switch(e.getActionCommand()){
+			case "MOVE":
+				//TODO show roll of dice
+				if(!moveSelected){
+					goc.die.roll();
+					goc.highlightValidMoves();
+					moveSelected = true;
+					can_board.setBoard(goc.getBoard());
+					System.out.println("Move Selected");
+				}
+				break;
+			case "ACCUSE":
+				System.out.println("Accuse Selected");
+				break;
+			case "GUESS":
+				System.out.println("Guess Selected");
+				break;
+			}
+		}
+	}
+
+	private class BoardMouseListener implements MouseListener{
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			System.out.println(e.toString());
+			if(moveSelected){
+				Position moveTo = can_board.getBoardPosition(e.getX(), e.getY());
+				if(goc.validMove(moveTo)){
+					goc.move(moveTo);
+					moveSelected=false;
+					can_board.setBoard(goc.getBoard());
+				}
+			}
+
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// do nothing
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// do nothing
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// do nothing
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// do nothing
+
+		}
+
+
+	}
+
 	public boolean showGameOver(){
 		int popup = JOptionPane.showConfirmDialog(null, "Game Over!\nAll players eliminated.\n\nDo you want to play again?",
 				"You Won", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -229,9 +311,13 @@ public class CluedoFrame extends JFrame {
 	}
 
 	public void startNewGame(){
+		/*goc = new GameOfCluedo();
+		goc.startGame((int)(Math.random()*3+3));
+		can_board.setBoard(goc.getBoard());*/
 		goc = new GameOfCluedo();
 		NewGameFrame temp = new NewGameFrame(goc);
 		temp.setAlwaysOnTop(true);
+		can_board.setBoard(goc.getBoard());
 	}
 
 	/**

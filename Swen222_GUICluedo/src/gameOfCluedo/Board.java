@@ -25,7 +25,13 @@ public class Board {
 
 	public final int xSize = 25;
 	public final int ySize = 25;
+	public static final int GRID_SIZE = 38;
+	public static final int OFF_X = 40;
+	public static final int OFF_Y = 24;
+	public static final int SIZE = 1024;
+
 	private Square[][] board = new Square[xSize][ySize];
+	private List<Position> highlightPositions = new ArrayList<Position>();
 	public final List<Room> rooms = new ArrayList<Room>();
 	private final String[] roomTitles = {"Kitchen","Ball Room", "Conservatory", "Dining Room",
 										"Billiard Room", "Library", "Lounge", "Hall", "Study"};
@@ -310,30 +316,76 @@ public class Board {
 		BufferedImage boardReturn = new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
 		Graphics g = boardReturn.getGraphics();
 		g.drawImage(boardImage, 0, 0, 1024, 1024, null);
-		int gridSize = 38;
-		int offX = 40;
-		int offY = 24;
 
 		for (Player p : playerPos.keySet()){
 			Position pos = playerPos.get(p);
 			//if (p.getName() == Player.Character.Colonel_Mustard){
-			g.drawImage(playerTokenImage[p.getCharacter().ordinal()], offX +4+ pos.getX()*gridSize, offY +4+ pos.getY()*gridSize, null);
+			g.drawImage(playerTokenImage[p.getCharacter().ordinal()], OFF_X +4+ pos.getX()*GRID_SIZE, OFF_Y +4+ pos.getY()*GRID_SIZE, null);
 			/*	continue;
 			}
 			Color[] col = {Color.RED, Color.YELLOW, Color.WHITE, Color.GREEN, Color.BLUE, Color.MAGENTA.darker()};
 			g.setColor(col[p.getName().ordinal()]);
 			g.fillRect(offX + pos.getX()*gridSize, offY + pos.getY()*gridSize, gridSize, gridSize);*/
 		}
-//		for(int x = 0; x<board.length; x++){
-//			for(int y = 0; y<board[0].length; y++){
-//				if(board[x][y] instanceof RoomSquare){
-//					if(((RoomSquare)board[x][y]).room()!=null){
-//					g.setColor(new Color(235,235,100,125));
-//					g.fillRect(offX+(x*gridSize), offY+(y*gridSize), gridSize, gridSize);
-//					}
-//				}
-//			}
-//		}
+		g.setColor(new Color(0,240,255,200));
+		for(Position pos : highlightPositions){
+			g.fillRect(OFF_X+(pos.getX()*GRID_SIZE), OFF_Y+(pos.getY()*GRID_SIZE), GRID_SIZE, GRID_SIZE);
+		}
+		g.setColor(new Color(0,0,0,255));
+		for(Position pos : highlightPositions){
+			g.drawRect(OFF_X+(pos.getX()*GRID_SIZE), OFF_Y+(pos.getY()*GRID_SIZE), GRID_SIZE, GRID_SIZE);
+		}
 		return boardReturn;
+	}
+
+	/**
+	 * Highlights a square at a position
+	 * @param pos
+	 */
+	public void highlightSquare(Position pos) {
+		highlightPositions.add(pos);
+	}
+
+	/**
+	 * Highlights all valid moves for a player wit given roll
+	 * @param pos
+	 */
+	public void highlightValidMoves(Player player, int roll) {
+		Set<Position> positions = getValidMoves(playerPos.get(player), roll);
+		for(Position pos : positions){
+			if(pos.isRoom()){
+				for(int x = 0; x<board.length; x++){
+					for(int y = 0; y<board[0].length; y++){
+						if(board[x][y] instanceof RoomSquare && ((RoomSquare)board[x][y]).room()!=null){
+							if(((RoomSquare)board[x][y]).room().equals(pos.getRoom())){
+								highlightPositions.add(new Position(x,y));
+							}
+						}
+					}
+				}
+			}else{
+				highlightPositions.add(pos);
+			}
+		}
+
+	}
+
+	/**
+	 * Clears all highlighted positions
+	 */
+	public void clearHighlights() {
+		highlightPositions.clear();
+	}
+
+	/**
+	 * Changes a coordinate pos to a room pos if is in room else return null
+	 * @param newPos
+	 * @return
+	 */
+	public Position coordinatePosToRoomPos(Position newPos) {
+		if(board[newPos.getX()][newPos.getY()] instanceof RoomSquare && ((RoomSquare)board[newPos.getX()][newPos.getY()]).room()!=null){
+			return new Position(((RoomSquare)board[newPos.getX()][newPos.getY()]).room());
+		}
+		return null;
 	}
 }

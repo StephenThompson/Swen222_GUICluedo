@@ -15,6 +15,7 @@ public class GameOfCluedo {
 	private GuessTuple envelope;
 	private Player winner = null;
 	private boolean hasMoved = false;
+	public Dice die = new Dice();
 
 	public final  static String charList[] = {"Miss Scarlett", "Colonel Mustard", "Mrs. White", "The Reverend Green",
 			"Mrs. Peacock", "Professor Plum"};
@@ -73,7 +74,11 @@ public class GameOfCluedo {
 	 */
 	public boolean move(Position pos){
 		if(pos==null){return false;}
+		if(board.coordinatePosToRoomPos(pos)!=null){
+			pos=board.coordinatePosToRoomPos(pos);
+		}
 		board.setPlayerPosition(currentPlayer, pos);
+		board.clearHighlights();
 		hasMoved = true;
 		return true;
 	}
@@ -170,6 +175,20 @@ public class GameOfCluedo {
 	 * @return
 	 */
 	public boolean validMove(Position newPos, int diceRoll){
+		if(board.coordinatePosToRoomPos(newPos)!=null){
+			newPos=board.coordinatePosToRoomPos(newPos);
+		}
+		if(newPos.isRoom()||(newPos.getX()>=0 && newPos.getY()>=0 && newPos.getX()<board.xSize && newPos.getY()<board.ySize)){
+			return board.validMove(currentPlayer, newPos, diceRoll);
+		}
+		return false;
+	}
+
+	public boolean validMove(Position newPos){
+		int diceRoll = die.currentValue();
+		if(board.coordinatePosToRoomPos(newPos)!=null){
+			newPos=board.coordinatePosToRoomPos(newPos);
+		}
 		if(newPos.isRoom()||(newPos.getX()>=0 && newPos.getY()>=0 && newPos.getX()<board.xSize && newPos.getY()<board.ySize)){
 			return board.validMove(currentPlayer, newPos, diceRoll);
 		}
@@ -243,5 +262,15 @@ public class GameOfCluedo {
 	 */
 	public boolean isEliminated(Player p){
 		return eliminated.contains(p);
+	}
+
+	public void highlightSquare(Position pos) {
+		board.highlightSquare(pos);
+		System.out.println("Position clicked: " + pos.getX() +"," +pos.getY());
+	}
+
+	public void highlightValidMoves() {
+		board.highlightValidMoves(currentPlayer, die.currentValue());
+
 	}
 }

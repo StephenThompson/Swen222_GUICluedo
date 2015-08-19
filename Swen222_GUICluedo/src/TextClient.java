@@ -236,7 +236,7 @@ public class TextClient {
 				//	Respond to player's choice
 				switch (opt){
 				case MOVE:
-					getMove(Dice.roll(), currentPlayer);
+					getMove(goc.die.roll(), currentPlayer);
 					break;
 				case SUGGEST:
 					getSuggest();

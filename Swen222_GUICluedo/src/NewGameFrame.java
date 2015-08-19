@@ -10,6 +10,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.List;
 import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +23,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -37,11 +40,22 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+import javax.swing.text.Element;
+import javax.swing.text.PlainDocument;
+import javax.swing.text.Position;
+import javax.swing.text.Segment;
 
 
 public class NewGameFrame extends JFrame {
+	//FIXME needs to fix radio buttons when adding and deleting players
 	private final int minPlayers = 3;
 	private final int maxPlayers = 6;
 
@@ -55,10 +69,11 @@ public class NewGameFrame extends JFrame {
 	private BufferedImage[] myPicture = null;
 	private BufferedImage backTexture = null;
 	private int selectedIndex;
+	private GameOfCluedo goc;
 
 	public NewGameFrame(GameOfCluedo goc){
 		super("New Game");
-
+		this.goc = goc;
 		/**
 		 * Main Panel
 		 */
@@ -114,6 +129,19 @@ public class NewGameFrame extends JFrame {
 		txt_name = new JTextField("Player 1");
 		pnl_main.add(txt_name, lay_gridConst);
 
+		// Limits the length of the player's name
+		txt_name.setDocument(new PlainDocument(){
+			@Override
+			public void insertString(int offs, String str, AttributeSet a) throws BadLocationException{
+				if (getLength() > 12){
+					return;
+				}
+				super.insertString(offs, str, a);
+			}
+		});
+
+		pnl_main.add(txt_name, lay_gridConst);
+
 		//Listener
 		txt_name.addKeyListener(new KeyListener() {
 
@@ -157,7 +185,7 @@ public class NewGameFrame extends JFrame {
 		    group.add(rad_character[c.ordinal()]);
 		    pnl_radio.add(rad_character[c.ordinal()]);
 		}
-		//rad_character[Player.Character.s].setSelected(true);
+
 		lay_gridConst.gridy = 2;
 		lay_gridConst.insets = new Insets(5, 15, 15, 15);
 		pnl_main.add(pnl_radio, lay_gridConst);
@@ -222,6 +250,12 @@ public class NewGameFrame extends JFrame {
 			}
 		});
 
+		btn_done.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				startGame();
+			}
+		});
 		// Adds the "add player" button
 		lay_gridConst.insets = new Insets(5, 15, 15, 0);
 		lay_gridConst.gridwidth = 1;
@@ -251,6 +285,16 @@ public class NewGameFrame extends JFrame {
 		setVisible(true);
 	}
 
+	private void startGame() {
+		ArrayList<Player> p = new ArrayList<Player>();
+		for (Object o : listModel.toArray()){
+			p.add((Player)o);
+		}
+		goc.startGame(p);
+
+		dispose();
+	}
+
 	/**
 	 * Set Methods
 	 */
@@ -261,8 +305,28 @@ public class NewGameFrame extends JFrame {
 				    JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		listModel.addElement(new Player(Player.Character.values()[list_players.getLastVisibleIndex()+1], 
-															"Player " + (list_players.getLastVisibleIndex()+2)));
+		ArrayList<Player.Character> usedChars = new ArrayList<Player.Character>();
+		ArrayList<String> usedNames = new ArrayList<String>();
+		//XXX
+		for (Object c : listModel.toArray()){
+			usedChars.add(((Player)c).getCharacter());
+			usedNames.add(((Player)c).getName());
+		}
+
+		Player.Character newChar = null;
+		String newName = null;
+
+		for (int i = 0; i < 6 && (newChar == null || newName == null); ++i){
+			if (!usedChars.contains(Player.Character.values()[i]) && newChar == null){
+				newChar = Player.Character.values()[i];
+			}
+			if (!usedNames.contains("Player " + (i+1)) && newName == null){
+				newName = "Player " + (i+1);
+			}
+		}
+
+		listModel.addElement(new Player(newChar, newName));
+		list_players.setSelectedIndex(listModel.getSize()-1);
 	}
 
 	private void deletePlayer(){
@@ -274,17 +338,23 @@ public class NewGameFrame extends JFrame {
 		}
 
 		int selected = list_players.getSelectedIndex();
-		listModel.remove(list_players.getSelectedIndex());
+		if (selected == 0){
+			list_players.setSelectedIndex(1);
+		} else{
+			list_players.setSelectedIndex(selected - 1);
+		}
+		rad_character[((Player)listModel.get(selected)).getCharacter().ordinal()].setEnabled(true);
+		listModel.remove(selected);
 	}
 
 	private void setPlayerName(String newName){
 		listModel.set(list_players.getSelectedIndex(), new Player(
-				((Player)list_players.getSelectedValue()).getCharacter(), newName)); //XXX Need to set a limit on the name length
+				((Player)list_players.getSelectedValue()).getCharacter(), newName)); //FIXME Need to set a limit on the name length
 	}
 
 	private void setPlayerCharacter(Player.Character c){
 		listModel.set(list_players.getSelectedIndex(), new Player( c,
-									((Player)list_players.getSelectedValue()).getName())); //XXX Need to set a limit on the name length
+									((Player)list_players.getSelectedValue()).getName())); //FIXME Need to set a limit on the name length
 
 		ImageIcon img = new ImageIcon(myPicture[c.ordinal()]);
 		picLabel.setIcon(img);
@@ -294,10 +364,14 @@ public class NewGameFrame extends JFrame {
 	private void setPlayer(Player p){
 		if (p == null) return;
 		txt_name.setText(p.getName());
-		rad_character[selectedIndex].setEnabled(false);
+
+		int val = ((Player)listModel.get(selectedIndex)).getCharacter().ordinal();
+		rad_character[val].setEnabled(false);
 		selectedIndex = list_players.getSelectedIndex();
-		rad_character[selectedIndex].setEnabled(true);
-		rad_character[((Player)list_players.getSelectedValue()).getCharacter().ordinal()].setSelected(true);
+
+		val = ((Player)listModel.get(selectedIndex)).getCharacter().ordinal();
+		rad_character[val].setEnabled(true);
+		rad_character[val].setSelected(true);
 	}
 
 	/**
