@@ -1,7 +1,12 @@
 package gameOfCluedo;
 
 import java.awt.Color;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.MultipleGradientPaint.CycleMethod;
+import java.awt.RadialGradientPaint;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -319,13 +324,17 @@ public class Board {
 
 		for (Player p : playerPos.keySet()){
 			Position pos = playerPos.get(p);
-			//if (p.getName() == Player.Character.Colonel_Mustard){
+			RadialGradientPaint gp = new RadialGradientPaint(
+					OFF_X +4+ pos.getX()*GRID_SIZE + GRID_SIZE / 2.f, 
+					OFF_Y +4+ pos.getY()*GRID_SIZE + GRID_SIZE / 2.f, 
+					GRID_SIZE/2.f+32, 
+					new float[] {0.f, 1.f}, 
+					new Color[]{new Color(255, 255, 255, 150), new Color(255, 255, 255, 0)}, CycleMethod.NO_CYCLE);
+
+			Graphics2D t = (Graphics2D)g;
+			t.setPaint(gp);
+			g.fillRect(OFF_X - 32 + pos.getX()*GRID_SIZE, OFF_Y - 32 + pos.getY()*GRID_SIZE, GRID_SIZE+64, GRID_SIZE+64);
 			g.drawImage(playerTokenImage[p.getCharacter().ordinal()], OFF_X +4+ pos.getX()*GRID_SIZE, OFF_Y +4+ pos.getY()*GRID_SIZE, null);
-			/*	continue;
-			}
-			Color[] col = {Color.RED, Color.YELLOW, Color.WHITE, Color.GREEN, Color.BLUE, Color.MAGENTA.darker()};
-			g.setColor(col[p.getName().ordinal()]);
-			g.fillRect(offX + pos.getX()*gridSize, offY + pos.getY()*gridSize, gridSize, gridSize);*/
 		}
 		g.setColor(new Color(0,240,255,200));
 		for(Position pos : highlightPositions){

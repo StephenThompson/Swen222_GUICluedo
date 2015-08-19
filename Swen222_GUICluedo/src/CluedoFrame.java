@@ -46,6 +46,7 @@ import javax.swing.border.SoftBevelBorder;
  * JLayout   : lay_Name
 */
 public class CluedoFrame extends JFrame {
+	private JTextField txt_name;
 	private BufferedImage backTexture = null;
 	private BoardCanvas can_board;
 	private GameOfCluedo goc;
@@ -161,9 +162,9 @@ public class CluedoFrame extends JFrame {
 
 		lay_gridConst.gridy = 1;
 
-		JTextField name = new JTextField("Colonel Mustard");
-		name.setEditable(false);
-		pnl_character.add(name, lay_gridConst);
+		txt_name = new JTextField("Colonel Mustard");
+		txt_name.setEditable(false);
+		pnl_character.add(txt_name, lay_gridConst);
 
 		lay_gridConst.gridy = 2;
 		pnl_character.add(btn_viewCards, lay_gridConst);
@@ -311,13 +312,10 @@ public class CluedoFrame extends JFrame {
 	}
 
 	public void startNewGame(){
-		/*goc = new GameOfCluedo();
-		goc.startGame((int)(Math.random()*3+3));
-		can_board.setBoard(goc.getBoard());*/
 		goc = new GameOfCluedo();
 		NewGameFrame temp = new NewGameFrame(goc);
 		temp.setAlwaysOnTop(true);
-		can_board.setBoard(goc.getBoard());
+		//can_board.setBoard(goc.getBoard());
 	}
 
 	/**
