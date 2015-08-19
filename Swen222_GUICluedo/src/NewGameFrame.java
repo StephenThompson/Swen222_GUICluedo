@@ -358,7 +358,6 @@ public class NewGameFrame extends JFrame {
 
 		ImageIcon img = new ImageIcon(myPicture[c.ordinal()]);
 		picLabel.setIcon(img);
-		//XXX
 	}
 
 	private void setPlayer(Player p){

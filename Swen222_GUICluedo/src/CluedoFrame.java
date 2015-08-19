@@ -47,7 +47,9 @@ import javax.swing.border.SoftBevelBorder;
 */
 public class CluedoFrame extends JFrame {
 	private JTextField txt_name;
+	private BufferedImage[] myPicture = null;
 	private BufferedImage backTexture = null;
+	private JLabel picLabel;
 	private BoardCanvas can_board;
 	private GameOfCluedo goc;
 	private boolean moveSelected = false;
@@ -150,7 +152,22 @@ public class CluedoFrame extends JFrame {
 		btn_viewCards.setPreferredSize(btnSize);
 
 		// Player's Character
-		BufferedImage myPicture;
+		/**
+		 * Player's Character Image
+		 */
+		try {
+			myPicture = new BufferedImage[]{
+					ImageIO.read(new File("src/Images/Scarlett.jpg")), ImageIO.read(new File("src/Images/Mustard.jpg")),
+					ImageIO.read(new File("src/Images/White.jpg")), ImageIO.read(new File("src/Images/Green.jpg")),
+					ImageIO.read(new File("src/Images/Peacock.jpg")), ImageIO.read(new File("src/Images/Plum.jpg"))};
+			ImageIcon img = new ImageIcon(myPicture[0]);
+			picLabel = new JLabel(img);
+			pnl_character.add(picLabel, lay_gridConst);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		//XXX
+		/*BufferedImage myPicture;
 		try {
 			myPicture = ImageIO.read(new File("src/Images/Mustard.jpg"));
 			ImageIcon img = new ImageIcon(myPicture);
@@ -158,7 +175,7 @@ public class CluedoFrame extends JFrame {
 			pnl_character.add(picLabel, lay_gridConst);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 
 		lay_gridConst.gridy = 1;
 
@@ -272,6 +289,10 @@ public class CluedoFrame extends JFrame {
 					can_board.setBoard(goc.getBoard());
 					if(!goc.getPlayerPos().isRoom()){
 						goc.endTurn();
+						
+						ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
+						picLabel.setIcon(img);
+						txt_name.setText(goc.getCurrentPlayer().getName());
 					}
 				}
 			}

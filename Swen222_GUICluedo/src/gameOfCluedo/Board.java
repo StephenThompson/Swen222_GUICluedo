@@ -1,9 +1,12 @@
 package gameOfCluedo;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.RadialGradientPaint;
 import java.awt.geom.Point2D;
@@ -319,7 +322,7 @@ public class Board {
 	 */
 	public BufferedImage draw(){
 		BufferedImage boardReturn = new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
-		Graphics g = boardReturn.getGraphics();
+		Graphics2D g = (Graphics2D)boardReturn.getGraphics();
 		g.drawImage(boardImage, 0, 0, 1024, 1024, null);
 
 		for (Player p : playerPos.keySet()){
@@ -331,12 +334,12 @@ public class Board {
 					new float[] {0.f, 1.f}, 
 					new Color[]{new Color(255, 255, 255, 150), new Color(255, 255, 255, 0)}, CycleMethod.NO_CYCLE);
 
-			Graphics2D t = (Graphics2D)g;
-			t.setPaint(gp);
+			g.setPaint(gp);
 			g.fillRect(OFF_X - 32 + pos.getX()*GRID_SIZE, OFF_Y - 32 + pos.getY()*GRID_SIZE, GRID_SIZE+64, GRID_SIZE+64);
 			g.drawImage(playerTokenImage[p.getCharacter().ordinal()], OFF_X +4+ pos.getX()*GRID_SIZE, OFF_Y +4+ pos.getY()*GRID_SIZE, null);
 		}
 		g.setColor(new Color(0,240,255,200));
+		g.setStroke(new BasicStroke(3));
 		for(Position pos : highlightPositions){
 			g.fillRect(OFF_X+(pos.getX()*GRID_SIZE), OFF_Y+(pos.getY()*GRID_SIZE), GRID_SIZE, GRID_SIZE);
 		}
