@@ -37,11 +37,11 @@ public class Deck {
 
 		// Weapons
 		weaponCards.add(new WeaponCard("Candlestick"));
-		weaponCards.add(new WeaponCard("Dagger"));
+		weaponCards.add(new WeaponCard("Knife"));
 		weaponCards.add(new WeaponCard("Lead Pipe"));
 		weaponCards.add(new WeaponCard("Revolver"));
 		weaponCards.add(new WeaponCard("Rope"));
-		weaponCards.add(new WeaponCard("Spanner"));
+		weaponCards.add(new WeaponCard("Wrench"));
 
 		// Rooms
 		roomCards.add(new RoomCard("Kitchen"));
