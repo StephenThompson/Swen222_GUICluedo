@@ -89,7 +89,7 @@ public class GameOfCluedo {
 	 * @param y
 	 * @return
 	 */
-	public boolean canMove(Position pos){
+	public boolean canMove(){
 		return !hasMoved;
 	}
 

@@ -240,7 +240,7 @@ public class CluedoFrame extends JFrame {
 			switch(e.getActionCommand()){
 			case "MOVE":
 				//TODO show roll of dice
-				if(!moveSelected){
+				if(!moveSelected && goc.canMove()){
 					goc.die.roll();
 					goc.highlightValidMoves();
 					moveSelected = true;
@@ -269,6 +269,9 @@ public class CluedoFrame extends JFrame {
 					goc.move(moveTo);
 					moveSelected=false;
 					can_board.setBoard(goc.getBoard());
+					if(!goc.getPlayerPos().isRoom()){
+						goc.endTurn();
+					}
 				}
 			}
 
