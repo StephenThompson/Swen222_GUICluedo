@@ -271,6 +271,7 @@ public class CluedoFrame extends JFrame {
 				break;
 			case "GUESS":
 				System.out.println("Guess Selected");
+				new GuessFrame();
 				break;
 			}
 		}
