@@ -340,11 +340,11 @@ public class CluedoFrame extends JFrame {
 				can_board.setBoard(goc.getBoard());
 				showButtons();
 				enableButtons();
-				
+
 				ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
 				picLabel.setIcon(img);
 				txt_name.setText(goc.getCurrentPlayer().getName());
-				
+
 				repaint();
 				break;
 
