@@ -2,6 +2,7 @@ import gameOfCluedo.Dice;
 import gameOfCluedo.GameOfCluedo;
 import gameOfCluedo.GuessTuple;
 import gameOfCluedo.Position;
+import gameOfCluedo.cards.Card;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -21,6 +22,8 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -261,6 +264,7 @@ public class CluedoFrame extends JFrame {
 		setResizable(true); // prevent us from being resizeable
 		setVisible(true); // make sure we are visible!
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE); // XXX
+		setMinimumSize(new Dimension(800, 600));
 	}
 
 	/**
@@ -307,7 +311,6 @@ public class CluedoFrame extends JFrame {
 					goc.highlightValidMoves();
 					moveSelected = true;
 					can_board.setBoard(goc.getBoard());
-					System.out.println("Move Selected");
 				}
 				break;
 			case "ACCUSE":
@@ -324,9 +327,7 @@ public class CluedoFrame extends JFrame {
 				}
 				break;
 			case "GUESS":
-				System.out.println("Guess Selected");
-				GuessDialog gs = new GuessDialog();
-				goc.guess(gs.getGuess("Guess"));
+				guessButtonPressed();
 				break;
 			case "CARDS":
 				System.out.println("Cards Selected");
@@ -340,6 +341,7 @@ public class CluedoFrame extends JFrame {
 				can_board.setBoard(goc.getBoard());
 				showButtons();
 				enableButtons();
+				btn_guess.setEnabled(false);
 
 				ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
 				picLabel.setIcon(img);
@@ -354,6 +356,21 @@ public class CluedoFrame extends JFrame {
 			}
 		}
 	}
+
+	private void guessButtonPressed(){
+		System.out.println("Guess Selected");
+		GuessDialog gs = new GuessDialog();
+		Card shownCard = goc.guess(gs.getGuess("Guess"));
+		if(shownCard!=null){
+			List<Card> cardList = new ArrayList<Card>();
+			cardList.add(shownCard);
+			new ShowCardsFrame(cardList, "You were shown the " + shownCard.getTitle() + " card!",
+					"You were shown the " + shownCard.getTitle() + " card!\n"
+							+ "This card cannot be in the envelope!");
+		}
+		endTurn();
+	}
+
 
 	private void exitGame(){
 		this.setVisible(false);
@@ -377,6 +394,8 @@ public class CluedoFrame extends JFrame {
 					can_board.setBoard(goc.getBoard());
 					if(!goc.getPlayerPos().isRoom()){
 						endTurn();
+					}else{
+						btn_guess.setEnabled(true);
 					}
 				}
 			}
@@ -420,6 +439,12 @@ public class CluedoFrame extends JFrame {
 		ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
 		picLabel.setIcon(img);
 		txt_name.setText(goc.getCurrentPlayer().getName());
+		//if new player not in room disable guess
+		if(!goc.getPlayerPos().isRoom()){
+			btn_guess.setEnabled(false);
+		}else{
+			btn_guess.setEnabled(true);
+		}
 	}
 
 	public boolean showGameOver(){

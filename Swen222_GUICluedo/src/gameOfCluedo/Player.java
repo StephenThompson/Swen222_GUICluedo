@@ -52,15 +52,15 @@ public class Player {
 		for (Card c : hand){
 			if (c instanceof CharCard){
 				if (c.equals(guess.getCharacter())){
-					return guess.getCharacter();
+					return (CharCard)c;
 				}
 			} else if (c instanceof WeaponCard){
 				if (c.equals(guess.getWeapon())){
-					return guess.getWeapon();
+					return (WeaponCard)c;
 				}
 			} else if (c instanceof RoomCard){
 				if (c.equals(guess.getRoom())){
-					return guess.getRoom();
+					return (RoomCard)c;
 				}
 			}
 		}

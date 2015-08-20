@@ -2,9 +2,11 @@ import gameOfCluedo.cards.Card;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -16,12 +18,24 @@ import javax.swing.JPanel;
 
 public class ShowCardsFrame extends JFrame {
 
+
+	public ShowCardsFrame(List<Card> cards, String title, String message){
+		this(cards, title);
+		JPanel pnl_message = new JPanel();
+		JLabel lbl_message = new JLabel(message);
+		lbl_message.setPreferredSize(new Dimension(500, 100));
+		pnl_message.add(lbl_message);
+		add(pnl_message, BorderLayout.NORTH);
+	}
+
+
 	public ShowCardsFrame(List<Card> cards, String title){
 		setTitle(title);
-		setLayout(new BorderLayout());
+		setLayout(new GridBagLayout());
 		//Create Card panels
 		JPanel pnl_cards = new JPanel();
 		pnl_cards.setLayout(new GridLayout(1,10));
+		pnl_cards.setPreferredSize(new Dimension(160,240));
 		for(Card c: cards){
 			JLabel cardLabel = new JLabel();
 			System.out.println(c.getTitle());
@@ -43,7 +57,7 @@ public class ShowCardsFrame extends JFrame {
 		add(btn_ok, BorderLayout.EAST);
 
 		pack(); // pack components tightly together
-		setResizable(false); // prevent us from being resizeable
+		setResizable(true); // prevent us from being resizeable
 		setVisible(true); // make sure we are visible!
 		System.out.println("Show cards created");
 	}
