@@ -150,6 +150,7 @@ public class CluedoFrame extends JFrame {
 
 		btn_viewCards = new JButton("View Cards");
 		btn_viewCards.setPreferredSize(btnSize);
+		btn_viewCards.setActionCommand("CARDS");
 
 		// Player's Character
 		/**
@@ -197,6 +198,8 @@ public class CluedoFrame extends JFrame {
 		// Buttons
 
 		ActionListener btnListener = new BtnListener();
+
+		btn_viewCards.addActionListener(btnListener);
 
  	    btn_move = new JButton("Move");
  	    btn_move.setPreferredSize(btnSize);
@@ -273,8 +276,16 @@ public class CluedoFrame extends JFrame {
 				System.out.println("Guess Selected");
 				new GuessFrame();
 				break;
+			case "CARDS":
+				System.out.println("Cards Selected");
+				showCards();
+				break;
 			}
 		}
+	}
+
+	private void showCards(){
+		new ShowCardsFrame(goc.getCurrentPlayer().gethand(), goc.getCurrentPlayer().getName() + "'s Hand!");
 	}
 
 	private class BoardMouseListener implements MouseListener{
@@ -290,7 +301,7 @@ public class CluedoFrame extends JFrame {
 					can_board.setBoard(goc.getBoard());
 					if(!goc.getPlayerPos().isRoom()){
 						goc.endTurn();
-						
+
 						ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
 						picLabel.setIcon(img);
 						txt_name.setText(goc.getCurrentPlayer().getName());
