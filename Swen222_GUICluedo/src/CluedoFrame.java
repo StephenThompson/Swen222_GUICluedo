@@ -295,9 +295,10 @@ public class CluedoFrame extends JFrame {
 				break;
 
 			case "NEW GAME":
-				NewGameDialog ngd = new NewGameDialog();
+				//NewGameDialog ngd = new NewGameDialog();
 				goc = new GameOfCluedo();
-				goc.startGame(ngd.getPlayers("New Game"));
+				goc.startGame(3);
+				//goc.startGame(ngd.getPlayers("New Game"));
 				can_board.setBoard(goc.getBoard());
 				break;
 
