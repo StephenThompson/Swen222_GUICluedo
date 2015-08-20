@@ -1,5 +1,9 @@
 import gameOfCluedo.GameOfCluedo;
+import gameOfCluedo.GuessTuple;
 import gameOfCluedo.Player;
+import gameOfCluedo.cards.CharCard;
+import gameOfCluedo.cards.RoomCard;
+import gameOfCluedo.cards.WeaponCard;
 
 import java.awt.Color;
 import java.awt.GradientPaint;
@@ -10,6 +14,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.TexturePaint;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.geom.Rectangle2D;
@@ -21,6 +27,7 @@ import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,15 +35,16 @@ import javax.swing.JRadioButton;
 import javax.swing.border.SoftBevelBorder;
 
 
-public class GuessFrame extends JFrame{
+public class GuessDialog {
 	private final JPanel pnl_main;
+	private final JButton btn_done;
 	private final JRadioButton rad_character[];
 	private final JRadioButton rad_weapon[];
 	private final JRadioButton rad_room[];
 	private BufferedImage backTexture = null;
 
-	public GuessFrame(){
-		super("Guess");
+	public GuessDialog(){
+		super();
 		/**
 		 * Main Panel
 		 */
@@ -68,7 +76,7 @@ public class GuessFrame extends JFrame{
 		lay_gridConst.ipadx = 5;
 		lay_gridConst.ipady = 5;
 		lay_gridConst.fill = lay_gridConst.BOTH;
-		
+
 		/**
 		 * Character Radio
 		 */
@@ -77,12 +85,12 @@ public class GuessFrame extends JFrame{
 		pnl_charRadio.setOpaque(false);
 		ButtonGroup groupChar = new ButtonGroup();
 
-		
+
 		JLabel lbl_char = new JLabel("Character");
 		lbl_char.setForeground(new Color(225,250,255,255));
 		pnl_charRadio.add(lbl_char);
 		pnl_charRadio.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
-		
+
 		rad_character = new JRadioButton[GameOfCluedo.charList.length];
 		int i = 0;
 		for (String c : GameOfCluedo.charList){
@@ -102,12 +110,12 @@ public class GuessFrame extends JFrame{
 		pnl_weaponRadio.setLayout(new GridLayout(0,1));
 		pnl_weaponRadio.setOpaque(false);
 		ButtonGroup groupWeapon = new ButtonGroup();
-		
+
 		JLabel lbl_weapon = new JLabel("Weapon");
 		lbl_weapon.setForeground(new Color(225,250,255,255));
 		pnl_weaponRadio.add(lbl_weapon);
 		pnl_weaponRadio.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
-		
+
 		lay_gridConst.gridx = 1;
 		rad_weapon = new JRadioButton[GameOfCluedo.weaponList.length];
 		i = 0;
@@ -152,17 +160,38 @@ public class GuessFrame extends JFrame{
 		/**
 		 * Button
 		 */
-		JButton btn_done = new JButton("Done");
+		btn_done = new JButton("Done");
 		lay_gridConst.gridy = 1;
 		lay_gridConst.insets = new Insets(15, 15, 15, 15);
 		pnl_main.add(btn_done, lay_gridConst);
-		/**
-		 * Main Window
-		 */
-		add(pnl_main);
-		pack();
-		setResizable(false);
-		setVisible(true);
+	}
+
+	/**
+	 * Returns a Guess Tuple
+	 * @param title
+	 * @return
+	 */
+	public GuessTuple getGuess(String title){
+
+		JDialog dialog = new JDialog();
+
+	     btn_done.addActionListener( new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 dialog.dispose();
+			}
+	     });
+
+	     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	     dialog.setModal(true);
+	     dialog.setTitle(title);
+	     dialog.getContentPane().add(pnl_main);
+	     dialog.pack();
+	     dialog.setLocationRelativeTo(null);
+	     dialog.setVisible(true);
+
+		return new GuessTuple(new CharCard("A"), new WeaponCard("B"), new RoomCard("C"));
 	}
 
 

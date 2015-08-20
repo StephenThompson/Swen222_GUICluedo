@@ -1,5 +1,6 @@
 import gameOfCluedo.Dice;
 import gameOfCluedo.GameOfCluedo;
+import gameOfCluedo.GuessTuple;
 import gameOfCluedo.Position;
 
 import java.awt.BorderLayout;
@@ -166,16 +167,6 @@ public class CluedoFrame extends JFrame {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//XXX
-		/*BufferedImage myPicture;
-		try {
-			myPicture = ImageIO.read(new File("src/Images/Mustard.jpg"));
-			ImageIcon img = new ImageIcon(myPicture);
-			JLabel picLabel = new JLabel(img);
-			pnl_character.add(picLabel, lay_gridConst);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
 
 		lay_gridConst.gridy = 1;
 
@@ -271,8 +262,24 @@ public class CluedoFrame extends JFrame {
 				break;
 			case "GUESS":
 				System.out.println("Guess Selected");
-				new GuessFrame();
-				break;
+				GuessPanel tempPanel = new GuessPanel();
+
+				//int popup = GuessDialog();
+
+				GuessDialog gs = new GuessDialog();
+				GuessTuple popup = gs.getGuess("Guess");
+
+				System.out.println(popup.toString());
+				/*int popup = JOptionPane.showConfirmDialog(null, tempPanel,
+						"Guess", JOptionPane.YES_NO_OPTION,
+						JOptionPane.PLAIN_MESSAGE);*/
+				/*int popup = JOptionPane.showConfirmDialog(null, tempPanel,
+						"Guess", JOptionPane.YES_NO_OPTION,
+						JOptionPane.PLAIN_MESSAGE);
+				if(popup==JOptionPane.YES_OPTION){
+
+				}
+				break;*/
 			}
 		}
 	}
@@ -290,7 +297,7 @@ public class CluedoFrame extends JFrame {
 					can_board.setBoard(goc.getBoard());
 					if(!goc.getPlayerPos().isRoom()){
 						goc.endTurn();
-						
+
 						ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
 						picLabel.setIcon(img);
 						txt_name.setText(goc.getCurrentPlayer().getName());
