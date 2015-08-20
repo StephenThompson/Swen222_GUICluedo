@@ -57,6 +57,7 @@ public class CluedoFrame extends JFrame {
 	private GameOfCluedo goc;
 	private boolean moveSelected = false;
 	private JLabel lbl_dice = null;
+	private JButton btn_viewCards, btn_move, btn_guess, btn_accuse;
 
 	public CluedoFrame() {
 		/**
@@ -111,7 +112,7 @@ public class CluedoFrame extends JFrame {
 		 * Side Panel
 		 */
 		JPanel pnl_character, pnl_option, pnl_side, pnl_dice;
-		JButton btn_viewCards, btn_move, btn_guess, btn_accuse;
+
 		Dimension btnSize = new Dimension(170, 32);
 
 		pnl_side = new JPanel() {
@@ -200,6 +201,12 @@ public class CluedoFrame extends JFrame {
 		btn_accuse.setActionCommand("ACCUSE");
 		btn_accuse.addActionListener(btnListener);
 
+		//Initilise btns as disabled
+		btn_viewCards.setEnabled(false);
+		btn_move.setVisible(false);
+		btn_guess.setVisible(false);
+		btn_accuse.setVisible(false);
+
 		//
 		lay_gridConst.gridy = 0;
 		pnl_option.add(btn_move, lay_gridConst);
@@ -219,11 +226,11 @@ public class CluedoFrame extends JFrame {
 		 */
 
 		pnl_dice = new JPanel();
-		pnl_dice.setLayout(new GridBagLayout());
+		//pnl_dice.setLayout(new GridBagLayout());
 		pnl_dice.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
 		pnl_dice.setBackground(new Color(255,255,255,255));
 		lbl_dice = new JLabel();
-		lbl_dice.setIcon(new ImageIcon("src/images/1.png"));
+		lbl_dice.setIcon(new ImageIcon("src/Images/1.png"));
 		pnl_dice.add(lbl_dice);
 
 		// Add stuff to main panel
@@ -239,8 +246,8 @@ public class CluedoFrame extends JFrame {
 		lay_gridConst.weighty = 1;
 		pnl_side.add(pnl_option, lay_gridConst);
 
-		lay_gridConst.weightx = 0.5;
-		lay_gridConst.weighty = 0.5;
+		lay_gridConst.weightx = 0;
+		lay_gridConst.weighty = 0;
 		lay_gridConst.gridy = 2;
 		pnl_side.add(pnl_dice, lay_gridConst);
 
@@ -253,6 +260,37 @@ public class CluedoFrame extends JFrame {
 		pack(); // pack components tightly together
 		setResizable(true); // prevent us from being resizeable
 		setVisible(true); // make sure we are visible!
+	}
+
+	/**
+	 * Show buttons
+	 */
+	private void showButtons(){
+		btn_viewCards.setVisible(true);
+		btn_move.setVisible(true);
+		btn_guess.setVisible(true);
+		btn_accuse.setVisible(true);
+	}
+
+	/**
+	 * Enable buttons
+	 */
+	private void enableButtons(){
+		btn_viewCards.setEnabled(true);
+		btn_move.setEnabled(true);
+		btn_guess.setEnabled(true);
+		btn_accuse.setEnabled(true);
+
+	}
+
+	/**
+	 * disable buttons
+	 */
+	private void disableButtons(){
+		btn_viewCards.setEnabled(true);
+		btn_move.setEnabled(true);
+		btn_guess.setEnabled(true);
+		btn_accuse.setEnabled(true);
 	}
 
 	private class BtnListener implements ActionListener{
@@ -295,11 +333,13 @@ public class CluedoFrame extends JFrame {
 				break;
 
 			case "NEW GAME":
-				//NewGameDialog ngd = new NewGameDialog();
+				NewGameDialog ngd = new NewGameDialog();
 				goc = new GameOfCluedo();
-				goc.startGame(3);
-				//goc.startGame(ngd.getPlayers("New Game"));
+				goc.startGame(ngd.getPlayers("New Game"));
 				can_board.setBoard(goc.getBoard());
+				showButtons();
+				enableButtons();
+				repaint();
 				break;
 
 			case "EXIT GAME":

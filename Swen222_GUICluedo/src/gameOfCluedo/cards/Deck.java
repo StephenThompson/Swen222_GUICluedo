@@ -50,7 +50,7 @@ public class Deck {
 
 			// Rooms
 			roomCards.add(new RoomCard("Kitchen", ImageIO.read(new File("src/Images/RoomCards/Kitchen.png"))));
-			roomCards.add(new RoomCard("Ball Room", ImageIO.read(new File("src/Images/RoomCards/BallRoom.png"))));
+			roomCards.add(new RoomCard("Ball Room", ImageIO.read(new File("src/Images/RoomCards/Ballroom.png"))));
 			roomCards.add(new RoomCard("Conservatory", ImageIO.read(new File("src/Images/RoomCards/Conservatory.png"))));
 			roomCards.add(new RoomCard("Dining Room", ImageIO.read(new File("src/Images/RoomCards/DiningRoom.png"))));
 			roomCards.add(new RoomCard("Billard Room", ImageIO.read(new File("src/Images/RoomCards/BillardRoom.png"))));
