@@ -35,7 +35,7 @@ public class Deck {
 		try{
 			charCards.add(new CharCard("Miss Scarlett", ImageIO.read(new File("src/Images/CharacterCards/MissScarlett.png"))));
 			charCards.add(new CharCard("Colonel Mustard", ImageIO.read(new File("src/Images/CharacterCards/ColonelMustard.png"))));
-			charCards.add(new CharCard("Mrs. White", ImageIO.read(new File("src/Images/CharacterCards/MissWhite.png"))));
+			charCards.add(new CharCard("Mrs. White", ImageIO.read(new File("src/Images/CharacterCards/MrsWhite.png"))));
 			charCards.add(new CharCard("The Reverend Green", ImageIO.read(new File("src/Images/CharacterCards/MrGreen.png"))));
 			charCards.add(new CharCard("Mrs. Peacock", ImageIO.read(new File("src/Images/CharacterCards/MrsPeacock.png"))));
 			charCards.add(new CharCard("Professor Plum", ImageIO.read(new File("src/Images/CharacterCards/ProfessorPlum.png"))));
