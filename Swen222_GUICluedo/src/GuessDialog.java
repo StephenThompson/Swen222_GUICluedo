@@ -41,10 +41,13 @@ public class GuessDialog {
 	private final JRadioButton rad_character[];
 	private final JRadioButton rad_weapon[];
 	private final JRadioButton rad_room[];
+	private int[] selectedCards;
+
 	private BufferedImage backTexture = null;
 
 	public GuessDialog(){
 		super();
+		selectedCards = new int[]{0, 0, 0};
 		/**
 		 * Main Panel
 		 */
@@ -97,10 +100,19 @@ public class GuessDialog {
 			rad_character[i] = new JRadioButton(c);
 			rad_character[i].setOpaque(false);
 			rad_character[i].setForeground(new Color(225,250,255,255));
+			final int k = i;
+			rad_character[i].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					selectedCards[0] = k;
+				}
+			});
 
 			groupChar.add(rad_character[i]);
 			pnl_charRadio.add(rad_character[i++]);
 		}
+		rad_character[0].setSelected(true);
+
 		pnl_main.add(pnl_charRadio, lay_gridConst);
 
 		/**
@@ -124,9 +136,18 @@ public class GuessDialog {
 			rad_weapon[i].setOpaque(false);
 			rad_weapon[i].setForeground(new Color(225,250,255,255));
 
+			final int k = i;
+			rad_weapon[i].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					selectedCards[1] = k;
+				}
+			});
+
 		    groupWeapon.add(rad_weapon[i]);
 		    pnl_weaponRadio.add(rad_weapon[i++]);
 		}
+		rad_weapon[0].setSelected(true);
 
 		pnl_main.add(pnl_weaponRadio, lay_gridConst);
 
@@ -151,9 +172,18 @@ public class GuessDialog {
 			rad_room[i].setOpaque(false);
 			rad_room[i].setForeground(new Color(225,250,255,255));
 
+			final int k = i;
+			rad_room[i].addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					selectedCards[2] = k;
+				}
+			});
+
 		    groupRoom.add(rad_room[i]);
 		    pnl_roomRadio.add(rad_room[i++]);
 		}
+		rad_room[0].setSelected(true);
 
 		pnl_main.add(pnl_roomRadio, lay_gridConst);
 
@@ -191,9 +221,9 @@ public class GuessDialog {
 	     dialog.setLocationRelativeTo(null);
 	     dialog.setVisible(true);
 
-		return new GuessTuple(new CharCard(GameOfCluedo.charList[0]), 
-							  new WeaponCard(GameOfCluedo.weaponList[0]), 
-							  new RoomCard(GameOfCluedo.roomList[0]));
+		return new GuessTuple(new CharCard(GameOfCluedo.charList[selectedCards[0]]),
+							  new WeaponCard(GameOfCluedo.weaponList[selectedCards[1]]),
+							  new RoomCard(GameOfCluedo.roomList[selectedCards[2]]));
 	}
 
 
