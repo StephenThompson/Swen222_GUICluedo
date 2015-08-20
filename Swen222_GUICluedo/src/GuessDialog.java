@@ -191,7 +191,9 @@ public class GuessDialog {
 	     dialog.setLocationRelativeTo(null);
 	     dialog.setVisible(true);
 
-		return new GuessTuple(new CharCard("A"), new WeaponCard("B"), new RoomCard("C"));
+		return new GuessTuple(new CharCard(GameOfCluedo.charList[0]), 
+							  new WeaponCard(GameOfCluedo.weaponList[0]), 
+							  new RoomCard(GameOfCluedo.roomList[0]));
 	}
 
 

@@ -141,7 +141,7 @@ public class GameOfCluedo {
 	 * @return boolean
 	 */
 	public boolean checkGameOver(){
-		return players.size()-eliminated.size() <= 1||winner!=null;
+		return players.size()-eliminated.size() <= 0 || winner!=null;
 	}
 
 	/**

@@ -61,6 +61,7 @@ public class CluedoFrame extends JFrame {
 		 */
 		super("Cluedo");
 		CluedoFrame frm_this = this;
+		ActionListener btnListener = new BtnListener();
 		setLayout(new BorderLayout()); // use border layour
 
 		/**
@@ -90,19 +91,11 @@ public class CluedoFrame extends JFrame {
 		menu_file.add(mitem_exitGame);
 
 		// Action listeners
-		mitem_newGame.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				startNewGame();
-			}
-		});
+		mitem_newGame.setActionCommand("NEW GAME");
+		mitem_newGame.addActionListener(btnListener);
 
-		mitem_exitGame.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				frm_this.dispose();
-			}
-		});
+		mitem_exitGame.setActionCommand("EXIT GAME");
+		mitem_exitGame.addActionListener(btnListener);
 
 		/**
 		 * Canvas
@@ -187,9 +180,6 @@ public class CluedoFrame extends JFrame {
 		pnl_option.setBackground(new Color(0,0,0,50));
 
 		// Buttons
-
-		ActionListener btnListener = new BtnListener();
-
 		btn_viewCards.addActionListener(btnListener);
 
  	    btn_move = new JButton("Move");
@@ -262,20 +252,44 @@ public class CluedoFrame extends JFrame {
 				break;
 			case "ACCUSE":
 				System.out.println("Accuse Selected");
+				GuessDialog ac = new GuessDialog();
+				if (goc.accuse(ac.getGuess("Accuse"))){
+					System.out.println("You win");
+					goc.setWinner(goc.getCurrentPlayer());//Correct set winner and end game
+				} else {
+					System.out.println("You lost");
+					goc.playerLost(goc.getCurrentPlayer());//Wrong remove player from play
+					endTurn();
+					can_board.setBoard(goc.getBoard());
+				}
 				break;
 			case "GUESS":
 				System.out.println("Guess Selected");
 				GuessDialog gs = new GuessDialog();
-				GuessTuple popup = gs.getGuess("Guess");
-
-				System.out.println(popup.toString());
+				goc.guess(gs.getGuess("Guess"));
 				break;
 			case "CARDS":
 				System.out.println("Cards Selected");
 				showCards();
 				break;
+
+			case "NEW GAME":
+				NewGameDialog ngd = new NewGameDialog();
+				goc = new GameOfCluedo();
+				goc.startGame(ngd.getPlayers("New Game"));
+				can_board.setBoard(goc.getBoard());
+				break;
+
+			case "EXIT GAME":
+				exitGame();
+				break;
 			}
 		}
+	}
+
+	private void exitGame(){
+		this.setVisible(false);
+		this.dispose();
 	}
 
 	private void showCards(){
@@ -294,11 +308,7 @@ public class CluedoFrame extends JFrame {
 					moveSelected=false;
 					can_board.setBoard(goc.getBoard());
 					if(!goc.getPlayerPos().isRoom()){
-						goc.endTurn();
-
-						ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
-						picLabel.setIcon(img);
-						txt_name.setText(goc.getCurrentPlayer().getName());
+						endTurn();
 					}
 				}
 			}
@@ -332,6 +342,18 @@ public class CluedoFrame extends JFrame {
 
 	}
 
+	private void endTurn(){
+		if (goc.checkGameOver()){
+			showGameOver();
+			return;
+		}
+
+		goc.endTurn();
+		ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
+		picLabel.setIcon(img);
+		txt_name.setText(goc.getCurrentPlayer().getName());
+	}
+
 	public boolean showGameOver(){
 		int popup = JOptionPane.showConfirmDialog(null, "Game Over!\nAll players eliminated.\n\nDo you want to play again?",
 				"You Won", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -339,13 +361,6 @@ public class CluedoFrame extends JFrame {
 			return true;
 		}
 		return false;
-	}
-
-	public void startNewGame(){
-		goc = new GameOfCluedo();
-		NewGameFrame temp = new NewGameFrame(goc);
-		temp.setAlwaysOnTop(true);
-		//can_board.setBoard(goc.getBoard());
 	}
 
 	/**
