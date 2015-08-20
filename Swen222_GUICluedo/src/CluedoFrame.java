@@ -24,6 +24,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,6 +34,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.border.SoftBevelBorder;
 
 /**
@@ -54,6 +56,7 @@ public class CluedoFrame extends JFrame {
 	private BoardCanvas can_board;
 	private GameOfCluedo goc;
 	private boolean moveSelected = false;
+	private JLabel lbl_dice = null;
 
 	public CluedoFrame() {
 		/**
@@ -107,7 +110,7 @@ public class CluedoFrame extends JFrame {
 		/**
 		 * Side Panel
 		 */
-		JPanel pnl_character, pnl_option, pnl_side;
+		JPanel pnl_character, pnl_option, pnl_side, pnl_dice;
 		JButton btn_viewCards, btn_move, btn_guess, btn_accuse;
 		Dimension btnSize = new Dimension(170, 32);
 
@@ -211,6 +214,18 @@ public class CluedoFrame extends JFrame {
 		lay_gridConst.weighty = 1.0;
 		pnl_option.add(new JLabel(), lay_gridConst);
 
+		/*
+		 * Dice panel
+		 */
+
+		pnl_dice = new JPanel();
+		pnl_dice.setLayout(new GridBagLayout());
+		pnl_dice.setBorder(new SoftBevelBorder(SoftBevelBorder.LOWERED));
+		pnl_dice.setBackground(new Color(255,255,255,255));
+		lbl_dice = new JLabel();
+		lbl_dice.setIcon(new ImageIcon("src/images/1.png"));
+		pnl_dice.add(lbl_dice);
+
 		// Add stuff to main panel
 		pnl_side.setLayout(new GridBagLayout());
 
@@ -223,6 +238,11 @@ public class CluedoFrame extends JFrame {
 		lay_gridConst.gridy = 1;
 		lay_gridConst.weighty = 1;
 		pnl_side.add(pnl_option, lay_gridConst);
+
+		lay_gridConst.weightx = 0.5;
+		lay_gridConst.weighty = 0.5;
+		lay_gridConst.gridy = 2;
+		pnl_side.add(pnl_dice, lay_gridConst);
 
 		// Background
 		try {
@@ -244,6 +264,7 @@ public class CluedoFrame extends JFrame {
 				//TODO show roll of dice
 				if(!moveSelected && goc.canMove()){
 					goc.die.roll();
+					lbl_dice.setIcon(goc.die.getDiceIcon());
 					goc.highlightValidMoves();
 					moveSelected = true;
 					can_board.setBoard(goc.getBoard());
