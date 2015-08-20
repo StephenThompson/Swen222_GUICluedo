@@ -151,6 +151,7 @@ public class CluedoFrame extends JFrame {
 
 		btn_viewCards = new JButton("View Cards");
 		btn_viewCards.setPreferredSize(btnSize);
+		btn_viewCards.setActionCommand("CARDS");
 
 		// Player's Character
 		/**
@@ -188,6 +189,8 @@ public class CluedoFrame extends JFrame {
 		// Buttons
 
 		ActionListener btnListener = new BtnListener();
+
+		btn_viewCards.addActionListener(btnListener);
 
  	    btn_move = new JButton("Move");
  	    btn_move.setPreferredSize(btnSize);
@@ -262,26 +265,21 @@ public class CluedoFrame extends JFrame {
 				break;
 			case "GUESS":
 				System.out.println("Guess Selected");
-				GuessPanel tempPanel = new GuessPanel();
-
-				//int popup = GuessDialog();
-
 				GuessDialog gs = new GuessDialog();
 				GuessTuple popup = gs.getGuess("Guess");
 
 				System.out.println(popup.toString());
-				/*int popup = JOptionPane.showConfirmDialog(null, tempPanel,
-						"Guess", JOptionPane.YES_NO_OPTION,
-						JOptionPane.PLAIN_MESSAGE);*/
-				/*int popup = JOptionPane.showConfirmDialog(null, tempPanel,
-						"Guess", JOptionPane.YES_NO_OPTION,
-						JOptionPane.PLAIN_MESSAGE);
-				if(popup==JOptionPane.YES_OPTION){
-
-				}
-				break;*/
+				break;
+			case "CARDS":
+				System.out.println("Cards Selected");
+				showCards();
+				break;
 			}
 		}
+	}
+
+	private void showCards(){
+		new ShowCardsFrame(goc.getCurrentPlayer().gethand(), goc.getCurrentPlayer().getName() + "'s Hand!");
 	}
 
 	private class BoardMouseListener implements MouseListener{
