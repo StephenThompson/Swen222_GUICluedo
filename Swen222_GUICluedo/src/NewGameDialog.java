@@ -126,8 +126,7 @@ public class NewGameDialog {
 		 */
 		lay_gridConst.insets = new Insets(5, 15, 5, 15);
 		lay_gridConst.gridy = 1;
-		txt_name = new JTextField("Player 1");
-		pnl_main.add(txt_name, lay_gridConst);
+		txt_name = new JTextField();
 
 		// Limits the length of the player's name
 		txt_name.setDocument(new PlainDocument(){
@@ -139,7 +138,7 @@ public class NewGameDialog {
 				super.insertString(offs, str, a);
 			}
 		});
-
+		txt_name.setText("Player 1");
 		pnl_main.add(txt_name, lay_gridConst);
 
 		//Listener
@@ -272,13 +271,7 @@ public class NewGameDialog {
 	}
 
 	public java.util.List<Player> getPlayers(String title) {
-		ArrayList<Player> p = new ArrayList<Player>();
-		for (Object o : listModel.toArray()){
-			p.add((Player)o);
-		}
-
-		JDialog dialog = new JDialog();
-
+		 JDialog dialog = new JDialog();
 	     btn_done.addActionListener( new ActionListener() {
 
 			@Override
@@ -294,7 +287,11 @@ public class NewGameDialog {
 	     dialog.pack();
 	     dialog.setLocationRelativeTo(null);
 	     dialog.setVisible(true);
-
+	     
+		ArrayList<Player> p = new ArrayList<Player>();
+		for (Object o : listModel.toArray()){
+			p.add((Player)o);
+		}
 		return p;
 	}
 
@@ -303,15 +300,14 @@ public class NewGameDialog {
 	 */
 	private void addPlayer(){
 		if (listModel.size() == maxPlayers){
-			//XXX
-			/*JOptionPane.showMessageDialog(this, "You have reached the maximum number of players.",
+			JOptionPane.showMessageDialog(null, "You have reached the maximum number of players.",
 					"Error",
-				    JOptionPane.ERROR_MESSAGE);*/
+				    JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		ArrayList<Player.Character> usedChars = new ArrayList<Player.Character>();
 		ArrayList<String> usedNames = new ArrayList<String>();
-		//XXX
+
 		for (Object c : listModel.toArray()){
 			usedChars.add(((Player)c).getCharacter());
 			usedNames.add(((Player)c).getName());
@@ -335,11 +331,9 @@ public class NewGameDialog {
 
 	private void deletePlayer(){
 		if (listModel.size() == minPlayers){
-			//XXX
-			/*
-			JOptionPane.showMessageDialog(this, "You must have at least " + minPlayers + " players.",
+			JOptionPane.showMessageDialog(null, "You must have at least " + minPlayers + " players.",
 					"Error",
-				    JOptionPane.ERROR_MESSAGE);*/
+				    JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
