@@ -47,7 +47,6 @@ public class ShowCardsFrame extends JFrame {
 		GUIEnd();
 	}
 
-
 	public ShowCardsFrame(List<Card> cards, String title){
 		GUIStart(cards, title);
 		GUIEnd();
@@ -72,8 +71,10 @@ public class ShowCardsFrame extends JFrame {
 		    }
 		};
 
+		setLayout(new GridBagLayout());
 		//Create Card panels
 		JPanel pnl_cards = new JPanel();
+
 		if (cards.size() < 3){
 			pnl_cards.setLayout(new GridLayout(0, cards.size(), 3, 3));
 		} else {
@@ -81,6 +82,7 @@ public class ShowCardsFrame extends JFrame {
 		}
 		pnl_cards.setOpaque(false);
 		pnl_cards.setBorder(new EmptyBorder(15, 15, 15, 15));
+
 
 		for(Card c: cards){
 			JLabel cardLabel = new JLabel();
@@ -114,7 +116,7 @@ public class ShowCardsFrame extends JFrame {
 		add(pnl_main);
 
 		pack(); // pack components tightly together
-		setResizable(false); // prevent us from being resizeable
+		setResizable(true); // prevent us from being resizeable
 		setVisible(true); // make sure we are visible!
 		System.out.println("Show cards created");
 	}
