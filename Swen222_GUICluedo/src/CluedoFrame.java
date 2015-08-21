@@ -310,30 +310,14 @@ public class CluedoFrame extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			switch(e.getActionCommand()){
 			case "MOVE":
-				//TODO show roll of dice
-				if(!moveSelected && goc.canMove()){
-					goc.die.roll();
-					lbl_dice.setIcon(goc.die.getDiceIcon());
-					goc.highlightValidMoves();
-					moveSelected = true;
-					can_board.setBoard(goc.getBoard());
-				}
+				movePressed();
 				break;
 			case "ACCUSE":
 				System.out.println("Accuse Selected");
-				GuessDialog ac = new GuessDialog();
-				if (goc.accuse(ac.getGuess("Accuse"))){
-					System.out.println("You win");
-					goc.setWinner(goc.getCurrentPlayer());//Correct set winner and end game
-				} else {
-					System.out.println("You lost");
-					goc.playerLost(goc.getCurrentPlayer());//Wrong remove player from play
-					endTurn();
-					can_board.setBoard(goc.getBoard());
-				}
+				accusePressed();
 				break;
 			case "GUESS":
-				guessButtonPressed();
+				guessPressed();
 				break;
 			case "CARDS":
 				System.out.println("Cards Selected");
@@ -341,21 +325,8 @@ public class CluedoFrame extends JFrame {
 				break;
 
 			case "NEW GAME":
-				NewGameDialog ngd = new NewGameDialog();
-				goc = new GameOfCluedo();
-				goc.startGame(ngd.getPlayers("New Game"));
-				can_board.setBoard(goc.getBoard());
-				showButtons();
-				enableButtons();
-				btn_guess.setEnabled(false);
-
-				ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
-				picLabel.setIcon(img);
-				txt_name.setText(goc.getCurrentPlayer().getName());
-
-				repaint();
+				newGame();
 				break;
-
 			case "EXIT GAME":
 				exitGame();
 				break;
@@ -363,7 +334,30 @@ public class CluedoFrame extends JFrame {
 		}
 	}
 
-	private void guessButtonPressed(){
+	private void movePressed(){
+		if(!moveSelected && goc.canMove()){
+			goc.die.roll();
+			lbl_dice.setIcon(goc.die.getDiceIcon());
+			goc.highlightValidMoves();
+			moveSelected = true;
+			can_board.setBoard(goc.getBoard());
+		}
+	}
+
+	private void accusePressed(){
+		GuessDialog ac = new GuessDialog();
+		if (goc.accuse(ac.getGuess("Accuse"))){
+			System.out.println("You win");
+			goc.setWinner(goc.getCurrentPlayer());//Correct set winner and end game
+		} else {
+			System.out.println("You lost");
+			goc.playerLost(goc.getCurrentPlayer());//Wrong remove player from play
+			endTurn();
+			can_board.setBoard(goc.getBoard());
+		}
+	}
+
+	private void guessPressed(){
 		System.out.println("Guess Selected");
 		GuessDialog gs = new GuessDialog();
 		Card shownCard = goc.guess(gs.getGuess("Guess"));
@@ -375,6 +369,22 @@ public class CluedoFrame extends JFrame {
 							+ "This card cannot be in the envelope!");
 		}
 		endTurn();
+	}
+
+	private void newGame(){
+		NewGameDialog ngd = new NewGameDialog();
+		goc = new GameOfCluedo();
+		goc.startGame(ngd.getPlayers("New Game"));
+		can_board.setBoard(goc.getBoard());
+		showButtons();
+		enableButtons();
+		btn_guess.setEnabled(false);
+
+		ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
+		picLabel.setIcon(img);
+		txt_name.setText(goc.getCurrentPlayer().getName());
+		//JOptionPane.showMessageDialog(this, goc.getCurrentPlayer().getName() + "'s Turn");
+		repaint();
 	}
 
 
@@ -445,6 +455,7 @@ public class CluedoFrame extends JFrame {
 		}else{
 			btn_guess.setEnabled(true);
 		}
+		//JOptionPane.showMessageDialog(this, goc.getCurrentPlayer().getName() + "'s Turn");
 	}
 
 	public boolean showGameOver(){
