@@ -223,7 +223,7 @@ public class GameOfCluedo {
 	 * Draws the board
 	 */
 	public BufferedImage getBoard(){
-		return board.draw();
+		return board.draw(currentPlayer);
 	}
 
 	/**

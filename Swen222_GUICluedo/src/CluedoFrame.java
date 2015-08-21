@@ -436,6 +436,8 @@ public class CluedoFrame extends JFrame {
 		}
 
 		goc.endTurn();
+		can_board.setBoard(goc.getBoard());
+		
 		ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
 		picLabel.setIcon(img);
 		txt_name.setText(goc.getCurrentPlayer().getName());

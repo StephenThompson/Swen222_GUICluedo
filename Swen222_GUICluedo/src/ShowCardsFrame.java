@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,6 +43,7 @@ public class ShowCardsFrame extends JFrame {
 		lbl_message.setForeground(Color.WHITE);
 		lbl_message.setEditable(false);
 		lbl_message.setWrapStyleWord(true);
+		lbl_message.setMaximumSize(lbl_message.getPreferredSize());
 
 		pnl_button.add(lbl_message);
 		GUIEnd();
@@ -101,8 +103,8 @@ public class ShowCardsFrame extends JFrame {
 
 	private void GUIEnd(){
 		JButton btn_ok = new JButton("OK");
-		btn_ok.setPreferredSize(new Dimension(60, 30));
 		btn_ok.setActionCommand("OK");
+
 		btn_ok.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {

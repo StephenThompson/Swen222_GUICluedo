@@ -33,9 +33,9 @@ public class Board {
 
 	public final int xSize = 25;
 	public final int ySize = 25;
-	public static final int GRID_SIZE = 38;
-	public static final int OFF_X = 40;
-	public static final int OFF_Y = 24;
+	public static final int GRID_SIZE = 37;
+	public static final int OFF_X = 60;
+	public static final int OFF_Y = 43;
 	public static final int SIZE = 1024;
 
 	private Square[][] board = new Square[xSize][ySize];
@@ -45,8 +45,8 @@ public class Board {
 										"Billiard Room", "Library", "Lounge", "Hall", "Study"};
 	private final int[][] roomCoordinates = {{1,4},{10,5},{19,3}, {2,13},{19,11},{19,17},{2,22}, {10,22}, {19,23}};
 	private Map<Player, Position> playerPos = new HashMap<Player, Position>();
-	//private final int[][] startingPositions = {{9,0}, {14,0}, {23,6}, {23,19}, {7, 24}, {0, 17}};
 	private final int[][] startingPositions = {{7, 24}, {0, 17}, {9,0}, {14,0}, {23,6}, {23,19}};
+
 	/*
 	 * 	Miss_Scarlett, Colonel_Mustard, Mrs_White,The_Reverend_Green ,Mrs_Peacock ,Professor_Plum
 	 */
@@ -320,30 +320,38 @@ public class Board {
 	/**
 	 * Draws the board and players
 	 */
-	public BufferedImage draw(){
+	public BufferedImage draw(Player current){
 		BufferedImage boardReturn = new BufferedImage(1024, 1024, BufferedImage.TYPE_INT_RGB);
 		Graphics2D g = (Graphics2D)boardReturn.getGraphics();
 		g.drawImage(boardImage, 0, 0, 1024, 1024, null);
 
+		Color[] playCol = new Color[]{ Color.CYAN, Color.PINK.darker(), Color.RED,
+										Color.RED, Color.GREEN, Color.ORANGE };
+
+		// FIXME multiple players in the same room cover each other
 		for (Player p : playerPos.keySet()){
 			Position pos = playerPos.get(p);
-			RadialGradientPaint gp = new RadialGradientPaint(
-					OFF_X +4+ pos.getX()*GRID_SIZE + GRID_SIZE / 2.f, 
-					OFF_Y +4+ pos.getY()*GRID_SIZE + GRID_SIZE / 2.f, 
-					GRID_SIZE/2.f+32, 
-					new float[] {0.f, 1.f}, 
-					new Color[]{new Color(255, 255, 255, 150), new Color(255, 255, 255, 0)}, CycleMethod.NO_CYCLE);
-
-			g.setPaint(gp);
-			g.fillRect(OFF_X - 32 + pos.getX()*GRID_SIZE, OFF_Y - 32 + pos.getY()*GRID_SIZE, GRID_SIZE+64, GRID_SIZE+64);
+			if (current.equals(p)){
+				int pI = p.getCharacter().ordinal();
+				RadialGradientPaint gp = new RadialGradientPaint(
+						OFF_X +4+ pos.getX()*GRID_SIZE + GRID_SIZE / 2.f,
+						OFF_Y +4+ pos.getY()*GRID_SIZE + GRID_SIZE / 2.f,
+						GRID_SIZE/2.f+32,
+						new float[] {0.f, 1.f},
+						new Color[]{new Color(playCol[pI].getRed(), playCol[pI].getGreen(), playCol[pI].getBlue(), 255),
+									new Color(playCol[pI].getRed(), playCol[pI].getGreen(), playCol[pI].getBlue(), 0)},
+							CycleMethod.NO_CYCLE);
+				g.setPaint(gp);
+				g.fillRect(OFF_X - 32 + pos.getX()*GRID_SIZE, OFF_Y - 32 + pos.getY()*GRID_SIZE, GRID_SIZE+64, GRID_SIZE+64);
+			}
 			g.drawImage(playerTokenImage[p.getCharacter().ordinal()], OFF_X +4+ pos.getX()*GRID_SIZE, OFF_Y +4+ pos.getY()*GRID_SIZE, null);
 		}
-		g.setColor(new Color(0,240,255,200));
+		g.setColor(new Color(0,240,255,100));
 		g.setStroke(new BasicStroke(3));
 		for(Position pos : highlightPositions){
 			g.fillRect(OFF_X+(pos.getX()*GRID_SIZE), OFF_Y+(pos.getY()*GRID_SIZE), GRID_SIZE, GRID_SIZE);
 		}
-		g.setColor(new Color(0,0,0,255));
+		g.setColor(new Color(0,0,0,100));
 		for(Position pos : highlightPositions){
 			g.drawRect(OFF_X+(pos.getX()*GRID_SIZE), OFF_Y+(pos.getY()*GRID_SIZE), GRID_SIZE, GRID_SIZE);
 		}
