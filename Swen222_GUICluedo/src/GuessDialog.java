@@ -226,6 +226,40 @@ public class GuessDialog {
 							  new RoomCard(GameOfCluedo.roomList[selectedCards[2]]));
 	}
 
+	public GuessTuple getGuess(String title, String room){
+
+		for (int i = 0; i < rad_room.length; ++i){
+			if (!rad_room[i].getText().equals(room)){
+				rad_room[i].setEnabled(false);
+			} else {
+				rad_room[i].setSelected(true);
+				selectedCards[2] = i;
+			}
+		}
+
+		JDialog dialog = new JDialog();
+
+	     btn_done.addActionListener( new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				 dialog.dispose();
+			}
+	     });
+
+	     dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	     dialog.setModal(true);
+	     dialog.setTitle(title);
+	     dialog.getContentPane().add(pnl_main);
+	     dialog.pack();
+	     dialog.setLocationRelativeTo(null);
+	     dialog.setVisible(true);
+
+		return new GuessTuple(new CharCard(GameOfCluedo.charList[selectedCards[0]]),
+							  new WeaponCard(GameOfCluedo.weaponList[selectedCards[1]]),
+							  new RoomCard(GameOfCluedo.roomList[selectedCards[2]]));
+	}
+
 
 	/**
 	 * Draws the textured background on the side panel

@@ -20,10 +20,10 @@ public class GameOfCluedo {
 	public final  static String charList[] = {"Miss Scarlett", "Colonel Mustard", "Mrs. White", "The Reverend Green",
 			"Mrs. Peacock", "Professor Plum"};
 
-	public final  static String weaponList[] = {"Candlestick", "Dagger", "Lead Pipe", "Revolver",
+	public final  static String weaponList[] = {"Candlestick", "Knife", "Lead Pipe", "Revolver",
 			"Rope", "Spanner"};
 
-	public final  static String roomList[] = {"Kitchen", "Ball Room", "Conservatory", "Dining Room",
+	public final  static String roomList[] = {"Kitchen", "Ballroom", "Conservatory", "Dining Room",
 			"Billard Room", "Library",  "Lounge",  "Hall",  "Study"};
 
 	public GameOfCluedo() {

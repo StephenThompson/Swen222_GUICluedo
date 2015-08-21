@@ -368,7 +368,8 @@ public class CluedoFrame extends JFrame {
 	private void guessPressed(){
 		System.out.println("Guess Selected");
 		GuessDialog gs = new GuessDialog();
-		Card shownCard = goc.guess(gs.getGuess("Guess"));
+		assert goc.getPlayerPos().isRoom();
+		Card shownCard = goc.guess(gs.getGuess("Guess", goc.getPlayerPos().getRoom().getName()));
 		if(shownCard!=null){
 			List<Card> cardList = new ArrayList<Card>();
 			cardList.add(shownCard);
@@ -455,7 +456,7 @@ public class CluedoFrame extends JFrame {
 
 		goc.endTurn();
 		can_board.setBoard(goc.getBoard());
-		
+
 		ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
 		picLabel.setIcon(img);
 		txt_name.setText(goc.getCurrentPlayer().getName());
