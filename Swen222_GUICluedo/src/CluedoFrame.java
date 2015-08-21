@@ -419,6 +419,7 @@ public class CluedoFrame extends JFrame {
 					if(!goc.getPlayerPos().isRoom()){
 						endTurn();
 					}else{
+						btn_move.setEnabled(false);
 						btn_guess.setEnabled(true);
 					}
 				}
@@ -455,7 +456,7 @@ public class CluedoFrame extends JFrame {
 
 		goc.endTurn();
 		can_board.setBoard(goc.getBoard());
-		
+
 		ImageIcon img = new ImageIcon(myPicture[goc.getCurrentPlayer().getCharacter().ordinal()]);
 		picLabel.setIcon(img);
 		txt_name.setText(goc.getCurrentPlayer().getName());
@@ -465,6 +466,7 @@ public class CluedoFrame extends JFrame {
 		}else{
 			btn_guess.setEnabled(true);
 		}
+		btn_move.setEnabled(true);
 		//JOptionPane.showMessageDialog(this, goc.getCurrentPlayer().getName() + "'s Turn");
 	}
 
