@@ -17,11 +17,11 @@ public class Test_GameLogic {
 		assertTrue(game.getWinner().equals(game.getCurrentPlayer()));
 	}
 
-	@Test
-	public void dice(){
-		for (int i = 0; i < 10000; i++){
-			int value = new Dice().roll();
-			assert value >= 1 && value <= 6;
-		}
-	}
+//	@Test
+//	public void dice(){
+//		for (int i = 0; i < 10000; i++){
+//			int value = new Dice().roll();
+//			assert value >= 1 && value <= 6;
+//		}
+//	}
 }

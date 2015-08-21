@@ -15,8 +15,9 @@ public class Test_Player {
 
 	@Test
 	public void test_GetName(){
-		Player player = new Player(Character.Miss_Scarlett);
-		assertEquals(Character.Miss_Scarlett, player.getName());
+		Player player = new Player(Character.Miss_Scarlett, "Player name test");
+		assertEquals(Character.Miss_Scarlett, player.getCharacter());
+		assertEquals("Player name test", player.getName());
 	}
 
 	@Test
