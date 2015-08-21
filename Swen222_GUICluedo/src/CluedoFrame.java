@@ -266,9 +266,9 @@ public class CluedoFrame extends JFrame {
 		} catch (IOException e) {
 		}
 
-		pack(); // pack components tightly together
-		setResizable(true); // prevent us from being resizeable
-		setVisible(true); // make sure we are visible!
+		pack();
+		setResizable(true);
+		setVisible(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE); // XXX
 		setMinimumSize(new Dimension(800, 600));
 	}
