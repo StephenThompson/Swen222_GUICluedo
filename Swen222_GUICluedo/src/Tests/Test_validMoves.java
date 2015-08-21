@@ -10,7 +10,7 @@ import gameOfCluedo.Player;
 import gameOfCluedo.Position;
 
 public class Test_validMoves {
-	public final String boardFile = "src/CluedoBoard.txt"; 
+	public final String boardFile = "src/CluedoBoard.txt";
 	@Test
 	public void valid_move_1(){
 		Board board = new Board(boardFile);
@@ -83,7 +83,7 @@ public class Test_validMoves {
 		Position pos = new Position(7,1);
 		Position target = new Position(9,0);
 		int roll = 6;
-		assertFalse(checkMove(board, pos, target, roll));
+		assert(checkMove(board, pos, target, roll));
 	}
 
 	@Test

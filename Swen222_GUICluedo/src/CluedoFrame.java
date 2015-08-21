@@ -13,7 +13,9 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.TexturePaint;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -72,6 +74,12 @@ public class CluedoFrame extends JFrame {
 		CluedoFrame frm_this = this;
 		ActionListener btnListener = new BtnListener();
 		setLayout(new BorderLayout()); // use border layour
+		//Set cursor
+//		BufferedImage cursorImage = null;
+//		try{
+//		cursorImage = ImageIO.read(new File("src/Images/cursor.png"));
+//		}catch(IOException e){System.out.println("Error loading cursor image: cursor.png");}
+//		setCursor(Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0,0), "Cursor"));
 
 		/**
 		 * MenuBar
