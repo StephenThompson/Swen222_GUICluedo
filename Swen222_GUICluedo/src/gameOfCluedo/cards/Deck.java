@@ -1,5 +1,6 @@
 package gameOfCluedo.cards;
 
+import gameOfCluedo.GameOfCluedo;
 import gameOfCluedo.GuessTuple;
 import gameOfCluedo.Player;
 
@@ -33,31 +34,34 @@ public class Deck {
 
 		// Characters
 		try{
-			charCards.add(new CharCard("Miss Scarlett", ImageIO.read(new File("src/Images/CharacterCards/MissScarlett.png"))));
-			charCards.add(new CharCard("Colonel Mustard", ImageIO.read(new File("src/Images/CharacterCards/ColonelMustard.png"))));
-			charCards.add(new CharCard("Mrs. White", ImageIO.read(new File("src/Images/CharacterCards/MrsWhite.png"))));
-			charCards.add(new CharCard("The Reverend Green", ImageIO.read(new File("src/Images/CharacterCards/MrGreen.png"))));
-			charCards.add(new CharCard("Mrs. Peacock", ImageIO.read(new File("src/Images/CharacterCards/MrsPeacock.png"))));
-			charCards.add(new CharCard("Professor Plum", ImageIO.read(new File("src/Images/CharacterCards/ProfessorPlum.png"))));
+			String[] c = GameOfCluedo.charList;
+			charCards.add(new CharCard(c[0], ImageIO.read(new File("src/Images/CharacterCards/MissScarlett.png"))));
+			charCards.add(new CharCard(c[1], ImageIO.read(new File("src/Images/CharacterCards/ColonelMustard.png"))));
+			charCards.add(new CharCard(c[2], ImageIO.read(new File("src/Images/CharacterCards/MrsWhite.png"))));
+			charCards.add(new CharCard(c[3], ImageIO.read(new File("src/Images/CharacterCards/MrGreen.png"))));
+			charCards.add(new CharCard(c[4], ImageIO.read(new File("src/Images/CharacterCards/MrsPeacock.png"))));
+			charCards.add(new CharCard(c[5], ImageIO.read(new File("src/Images/CharacterCards/ProfessorPlum.png"))));
 
 			// Weapons
-			weaponCards.add(new WeaponCard("Candlestick", ImageIO.read(new File("src/Images/WeaponCards/Candlestick.png"))));
-			weaponCards.add(new WeaponCard("Knife", ImageIO.read(new File("src/Images/WeaponCards/Knife.png"))));
-			weaponCards.add(new WeaponCard("Lead Pipe", ImageIO.read(new File("src/Images/WeaponCards/LeadPipe.png"))));
-			weaponCards.add(new WeaponCard("Revolver", ImageIO.read(new File("src/Images/WeaponCards/Revolver.png"))));
-			weaponCards.add(new WeaponCard("Rope", ImageIO.read(new File("src/Images/WeaponCards/Rope.png"))));
-			weaponCards.add(new WeaponCard("Wrench", ImageIO.read(new File("src/Images/WeaponCards/Wrench.png"))));
+			String[] w = GameOfCluedo.weaponList;
+			weaponCards.add(new WeaponCard(w[0], ImageIO.read(new File("src/Images/WeaponCards/Candlestick.png"))));
+			weaponCards.add(new WeaponCard(w[1], ImageIO.read(new File("src/Images/WeaponCards/Knife.png"))));
+			weaponCards.add(new WeaponCard(w[2], ImageIO.read(new File("src/Images/WeaponCards/LeadPipe.png"))));
+			weaponCards.add(new WeaponCard(w[3], ImageIO.read(new File("src/Images/WeaponCards/Revolver.png"))));
+			weaponCards.add(new WeaponCard(w[4], ImageIO.read(new File("src/Images/WeaponCards/Rope.png"))));
+			weaponCards.add(new WeaponCard(w[5], ImageIO.read(new File("src/Images/WeaponCards/Wrench.png"))));
 
 			// Rooms
-			roomCards.add(new RoomCard("Kitchen", ImageIO.read(new File("src/Images/RoomCards/Kitchen.png"))));
-			roomCards.add(new RoomCard("Ball Room", ImageIO.read(new File("src/Images/RoomCards/Ballroom.png"))));
-			roomCards.add(new RoomCard("Conservatory", ImageIO.read(new File("src/Images/RoomCards/Conservatory.png"))));
-			roomCards.add(new RoomCard("Dining Room", ImageIO.read(new File("src/Images/RoomCards/DiningRoom.png"))));
-			roomCards.add(new RoomCard("Billard Room", ImageIO.read(new File("src/Images/RoomCards/BillardRoom.png"))));
-			roomCards.add(new RoomCard("Library", ImageIO.read(new File("src/Images/RoomCards/Library.png"))));
-			roomCards.add(new RoomCard("Lounge", ImageIO.read(new File("src/Images/RoomCards/Lounge.png"))));
-			roomCards.add(new RoomCard("Hall", ImageIO.read(new File("src/Images/RoomCards/Hall.png"))));
-			roomCards.add(new RoomCard("Study", ImageIO.read(new File("src/Images/RoomCards/Study.png"))));
+			String[] r = GameOfCluedo.roomList;
+			roomCards.add(new RoomCard(r[0], ImageIO.read(new File("src/Images/RoomCards/Kitchen.png"))));
+			roomCards.add(new RoomCard(r[1], ImageIO.read(new File("src/Images/RoomCards/Ballroom.png"))));
+			roomCards.add(new RoomCard(r[2], ImageIO.read(new File("src/Images/RoomCards/Conservatory.png"))));
+			roomCards.add(new RoomCard(r[3], ImageIO.read(new File("src/Images/RoomCards/DiningRoom.png"))));
+			roomCards.add(new RoomCard(r[4], ImageIO.read(new File("src/Images/RoomCards/BillardRoom.png"))));
+			roomCards.add(new RoomCard(r[5], ImageIO.read(new File("src/Images/RoomCards/Library.png"))));
+			roomCards.add(new RoomCard(r[6], ImageIO.read(new File("src/Images/RoomCards/Lounge.png"))));
+			roomCards.add(new RoomCard(r[7], ImageIO.read(new File("src/Images/RoomCards/Hall.png"))));
+			roomCards.add(new RoomCard(r[8], ImageIO.read(new File("src/Images/RoomCards/Study.png"))));
 
 		}catch(IOException e){
 			System.out.println(e.getMessage());
