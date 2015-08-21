@@ -21,7 +21,7 @@ public class GameOfCluedo {
 			"Mrs. Peacock", "Professor Plum"};
 
 	public final  static String weaponList[] = {"Candlestick", "Knife", "Lead Pipe", "Revolver",
-			"Rope", "Spanner"};
+			"Rope", "Wrench"};
 
 	public final  static String roomList[] = {"Kitchen", "Ballroom", "Conservatory", "Dining Room",
 			"Billard Room", "Library",  "Lounge",  "Hall",  "Study"};
