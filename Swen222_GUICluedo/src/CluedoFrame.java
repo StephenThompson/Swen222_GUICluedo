@@ -16,8 +16,10 @@ import java.awt.Insets;
 import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -189,21 +191,25 @@ public class CluedoFrame extends JFrame {
 
 		// Buttons
 		btn_viewCards.addActionListener(btnListener);
+		btn_viewCards.setMnemonic(KeyEvent.VK_V);
 
  	    btn_move = new JButton("Move");
  	    btn_move.setPreferredSize(btnSize);
  	    btn_move.setActionCommand("MOVE");
  	    btn_move.addActionListener(btnListener);
+ 	    btn_move.setMnemonic(KeyEvent.VK_M);
 
 		btn_guess = new JButton("Guess");
 		btn_guess.setPreferredSize(btnSize);
 		btn_guess.setActionCommand("GUESS");
 		btn_guess.addActionListener(btnListener);
+		btn_guess.setMnemonic(KeyEvent.VK_G);
 
 		btn_accuse = new JButton("Accuse");
 		btn_accuse.setPreferredSize(btnSize);
 		btn_accuse.setActionCommand("ACCUSE");
 		btn_accuse.addActionListener(btnListener);
+		btn_accuse.setMnemonic(KeyEvent.VK_A);
 
 		//Initilise btns as disabled
 		btn_viewCards.setEnabled(false);
@@ -405,28 +411,22 @@ public class CluedoFrame extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// do nothing
-
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// do nothing
-
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// do nothing
-
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// do nothing
-
 		}
-
-
 	}
 
 	private void endTurn(){
