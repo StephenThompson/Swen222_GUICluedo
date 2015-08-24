@@ -64,6 +64,9 @@ public class GameOfCluedo {
 				deck = new Deck();
 				currentPlayer = players.get(0);
 				envelope = deck.deal(players);
+				System.out.println(envelope.getCharacter().getTitle());
+				System.out.println(envelope.getWeapon().getTitle());
+				System.out.println(envelope.getRoom().getTitle());
 	}
 
 	/**
@@ -199,11 +202,13 @@ public class GameOfCluedo {
 	 * Moves the turn to the next player
 	 */
 	public void endTurn(){
-		if(players.indexOf(currentPlayer)<players.size()-1){
-			currentPlayer = players.get(players.indexOf(currentPlayer)+1);
-		}else{
-			currentPlayer = players.get(0);
-		}
+		do {
+			if(players.indexOf(currentPlayer)<players.size()-1){
+				currentPlayer = players.get(players.indexOf(currentPlayer)+1);
+			}else{
+				currentPlayer = players.get(0);
+			}
+		} while (eliminated.contains(currentPlayer));
 		hasMoved=false;
 	}
 
@@ -212,11 +217,13 @@ public class GameOfCluedo {
 	 * @return
 	 */
 	public Player nextPlayer(){
-		if(players.indexOf(currentPlayer)<players.size()-1){
-			return players.get(players.indexOf(currentPlayer)+1);
-		}else{
-			return players.get(0);
-		}
+		do {
+			if(players.indexOf(currentPlayer)<players.size()-1){
+				return players.get(players.indexOf(currentPlayer)+1);
+			}else{
+				return players.get(0);
+			}
+		} while (eliminated.contains(currentPlayer));
 	}
 
 	/**
@@ -231,7 +238,9 @@ public class GameOfCluedo {
 	 * @return
 	 */
 	public Player getWinner(){
-		if(players.size()-eliminated.size()<=1){
+		if (players.size() == eliminated.size()){
+			winner = null;
+		} else if(players.size()-eliminated.size()<=1){
 			players.removeAll(eliminated);
 			winner=players.get(0);
 		}
@@ -269,8 +278,8 @@ public class GameOfCluedo {
 		System.out.println("Position clicked: " + pos.getX() +"," +pos.getY());
 	}
 
-	public void highlightValidMoves() {
-		board.highlightValidMoves(currentPlayer, die.currentValue());
+	public boolean highlightValidMoves() {
+		return board.highlightValidMoves(currentPlayer, die.currentValue());
 
 	}
 }

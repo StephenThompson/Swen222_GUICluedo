@@ -22,7 +22,7 @@ public class Dice {
 	 * @return int
 	 */
 	public int roll(){
-		currentValue = 6;//(int)(1 + Math.random()*6);
+		currentValue = (int)(1 + Math.random()*6);
 		System.out.println("Dice rolled a : " + currentValue);
 		try{
 		images = new BufferedImage[]{ImageIO.read(new File("src/Images/1.png")),

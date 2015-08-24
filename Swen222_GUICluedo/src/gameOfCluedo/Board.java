@@ -41,9 +41,10 @@ public class Board {
 	private Square[][] board = new Square[xSize][ySize];
 	private List<Position> highlightPositions = new ArrayList<Position>();
 	public final List<Room> rooms = new ArrayList<Room>();
-	private final String[] roomTitles = {"Kitchen","Ball Room", "Conservatory", "Dining Room",
-										"Billiard Room", "Library", "Lounge", "Hall", "Study"};
-	private final int[][] roomCoordinates = {{1,4},{10,5},{19,3}, {2,13},{19,11},{19,17},{2,22}, {10,22}, {19,23}};
+	private final String[] roomTitles = GameOfCluedo.roomList;
+										// {"Kitchen","Ball Room", "Conservatory", "Dining Room",
+										//"Billiard Room", "Library", "Lounge", "Hall", "Study"};
+	private final int[][] roomCoordinates = {{1,4},{10,5},{19,3}, {2,13},{20,9},{18,15},{2,22}, {10,22}, {19,23}};
 	private Map<Player, Position> playerPos = new HashMap<Player, Position>();
 	private final int[][] startingPositions = {{7, 24}, {0, 17}, {9,0}, {14,0}, {23,6}, {23,19}};
 
@@ -226,7 +227,7 @@ public class Board {
 		while(!nextPos.isEmpty()){
 			PosInfo posInfo = nextPos.poll();
 			if(!validMoves.contains(posInfo.pos)){
-				if(posInfo.pos.isRoom()||!playerPos.containsValue(posInfo.pos)){
+				if(posInfo.pos.isRoom()|| (!playerPos.containsValue(posInfo.pos) && posInfo.movesLeft == 0)){
 					validMoves.add(posInfo.pos);
 				}
 				if(posInfo.movesLeft>0&&!posInfo.pos.isRoom()){
@@ -325,26 +326,40 @@ public class Board {
 		Graphics2D g = (Graphics2D)boardReturn.getGraphics();
 		g.drawImage(boardImage, 0, 0, 1024, 1024, null);
 
-		Color[] playCol = new Color[]{ Color.CYAN, Color.PINK.darker(), Color.RED,
+		Color[] playCol = new Color[]{ Color.CYAN, Color.MAGENTA , Color.BLUE,
 										Color.RED, Color.GREEN, Color.ORANGE };
 
-		// FIXME multiple players in the same room cover each other
+		int roomPlayerNum[] = new int[roomTitles.length];
 		for (Player p : playerPos.keySet()){
 			Position pos = playerPos.get(p);
+			int inRoomPos = 0;
+			// Fixes players appearing on top of each other in the rooms
+			if (pos.getRoom() != null){ // Don't do the loop if we don't need to
+				for (int i = 0; i < roomTitles.length; ++i){
+					if (roomTitles[i].equals(pos.getRoom().getName())){
+						inRoomPos = roomPlayerNum[i];
+						roomPlayerNum[i]++;
+						i = roomTitles.length;
+					}
+				}
+			}
+
 			if (current.equals(p)){
+				// Draw the highlight around the current player
 				int pI = p.getCharacter().ordinal();
 				RadialGradientPaint gp = new RadialGradientPaint(
-						OFF_X +4+ pos.getX()*GRID_SIZE + GRID_SIZE / 2.f,
-						OFF_Y +4+ pos.getY()*GRID_SIZE + GRID_SIZE / 2.f,
-						GRID_SIZE/2.f+32,
+						OFF_X +1+ (pos.getX()+inRoomPos%3)*GRID_SIZE + GRID_SIZE / 2.f,
+						OFF_Y +1+ (pos.getY()+inRoomPos/3)*GRID_SIZE + GRID_SIZE / 2.f,
+						GRID_SIZE/2.f+28,
 						new float[] {0.f, 1.f},
-						new Color[]{new Color(playCol[pI].getRed(), playCol[pI].getGreen(), playCol[pI].getBlue(), 255),
+						new Color[]{new Color(playCol[pI].getRed(), playCol[pI].getGreen(), playCol[pI].getBlue(), 200),
 									new Color(playCol[pI].getRed(), playCol[pI].getGreen(), playCol[pI].getBlue(), 0)},
 							CycleMethod.NO_CYCLE);
 				g.setPaint(gp);
-				g.fillRect(OFF_X - 32 + pos.getX()*GRID_SIZE, OFF_Y - 32 + pos.getY()*GRID_SIZE, GRID_SIZE+64, GRID_SIZE+64);
+
+				g.fillRect(OFF_X - 32 + (pos.getX()+inRoomPos%3)*GRID_SIZE, OFF_Y - 32 + (pos.getY()+inRoomPos/3)*GRID_SIZE, GRID_SIZE+64, GRID_SIZE+64);
 			}
-			g.drawImage(playerTokenImage[p.getCharacter().ordinal()], OFF_X +4+ pos.getX()*GRID_SIZE, OFF_Y +4+ pos.getY()*GRID_SIZE, null);
+			g.drawImage(playerTokenImage[p.getCharacter().ordinal()], OFF_X +1+ (pos.getX()+inRoomPos%3)*GRID_SIZE, OFF_Y +1+ (pos.getY()+inRoomPos/3)*GRID_SIZE, null);
 		}
 		g.setColor(new Color(0,240,255,100));
 		g.setStroke(new BasicStroke(3));
@@ -370,7 +385,7 @@ public class Board {
 	 * Highlights all valid moves for a player wit given roll
 	 * @param pos
 	 */
-	public void highlightValidMoves(Player player, int roll) {
+	public boolean highlightValidMoves(Player player, int roll) {
 		Set<Position> positions = getValidMoves(playerPos.get(player), roll);
 		for(Position pos : positions){
 			if(pos.isRoom()){
@@ -387,7 +402,7 @@ public class Board {
 				highlightPositions.add(pos);
 			}
 		}
-
+		return (positions.size() != 0);
 	}
 
 	/**
